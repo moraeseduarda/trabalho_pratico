@@ -1,4 +1,4 @@
-# Trabalho Prátivo
+# Trabalho Prático
 ## INE5646-03238B (20252) - Programação para Web
 
 ### Grupo
