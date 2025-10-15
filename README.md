@@ -7,10 +7,9 @@
 - Isabela Rodrigues Serafim Kaiber (24204838)
 
 ### Descrição Inicial
-*Plataforma de Colaboração para Estudos*
+*Estante de Livros Virtual*
 
-Uma aplicação onde usuários podem criar salas temáticas, como "Desenvolvimento Web" ou "Cálculo", para compartilhar notas, links e materiais de estudo com outros estudantes.
-
+Uma aplicação onde usuários podem adicionar seus livros favoritos e compartilhar com os amigos (estilo Skoob).
 
 ### Stack
 - M: MongoDB
