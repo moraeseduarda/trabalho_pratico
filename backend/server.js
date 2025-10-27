@@ -5,9 +5,16 @@ import mongoose from 'mongoose';
 
 import connectDB from './config/db.js';
 
+import userRoutes from './routes/userRoutes.js';
+
 const app = express();
+const routes = express.Router();
 
 const PORT = process.env.PORT || 5000;
+
+routes.get('/', (req, res) => {
+    res.send('API está rodando');
+});
 
 app.use(cors({
     origin: 'https://localhost:5173',
@@ -21,6 +28,10 @@ app.use(express.json());
 // Exemplo: 'userRoutes.js' em 'backend/routes'
 // const userRoutes = require('./routes/userRoutes');
 // app.use('/api/users', userRoutes)
+
+app.use('/api/users', userRoutes);
+
+app.use('/api', routes);
 
 // Rota de teste
 app.get('/api/status', (req, res) => {
