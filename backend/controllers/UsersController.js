@@ -28,14 +28,18 @@ const registraUser = async (req, res) => {
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: 'Erro interno do servidor.'});
+        res.status(500).json({message: 'Erro interno do servidor.', erro: error.message});
     }
 };
 
 const authUser = async (req, res) => {
-    const {email, password} = req.body;
+    const { email, password } = req.body;
 
     const user = await User.findOne({email}).select('+password');
+
+    if (!user) {
+        return res.status(400).json({message: 'Usuário não encontrado'})
+    }
 
     if (user && (await user.matchPassword(password))) {
         res.json({
@@ -44,9 +48,11 @@ const authUser = async (req, res) => {
             email: user.email,
             // token
         });
+
     } else {
-        res.status(401).json({message: 'Email ou senha inválidos.'});
+        res.status(400).json({message: 'Email ou senha inválidos.'});
     }
+
 };
 
 export {registraUser, authUser};

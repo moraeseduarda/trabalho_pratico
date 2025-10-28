@@ -2,11 +2,8 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema(
+    // Mongo cria campo id automaticamente
     {
-        _id: {
-            type: String,
-            required: true,
-        },
         nome: {
             type: String,
             required: true,
@@ -22,6 +19,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: true,
             minlength: 6,
+            // Ao buscar usuário, o campo password não vem junto (mais seguro)
             select: false,
         }
     },
