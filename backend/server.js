@@ -1,19 +1,20 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
 
-const app = express()
+import connectDB from './config/db.js';
+
+const app = express();
 
 const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI
 
 app.use(cors({
-  origin: 'https://localhost:5173',
-  credentials: true
+    origin: 'https://localhost:5173',
+    credentials: true
 }));
 
-app.use(express.json())
+app.use(express.json());
 
 // Rotas serão importadas aqui
 
@@ -23,24 +24,23 @@ app.use(express.json())
 
 // Rota de teste
 app.get('/api/status', (req, res) => {
-  res.json({
-    message: 'Backend está rodando',
-    database: mongoose.STATES[mongoose.connection.readyState]
-  });
+    res.json({
+        message: 'Backend está rodando',
+        database: mongoose.STATES[mongoose.connection.readyState]
+    });
 });
 
-mongoose.connect(MONGODB_URI)
-  .then(() => {
-    console.log('Banco de dados conectado com sucesso');
+const inicializaServidor = async () => {
+    try {
+        await connectDB();
 
-    // Inicializando o servidor apenas após conexão com o banco de dados
-    app.listen(PORT, () => {
-      console.log(`Servidor Express rodando na porta ${PORT}`);
-    });
-})
-.catch(err => {
-  console.error('Erro ao conectar ao MongoDB', err.message);
+        app.listen(PORT, () => {
+            console.log(`Servidor Express rodando na porta ${PORT}`);
+        });
+    } catch (error) {
+        console.error('Erro ao conectar ao MongoDB', error.message);
+        process.exit(1);
+    }
+}
 
-  // Encerra a aplicação se a conexão com banco falhar
-  process.exit(1)
-})
+inicializaServidor();
