@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;600&display=swap');
+
+.page {
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f7;
+  font-family: 'Outfit', sans-serif;
+  padding: 32px;
+}
+
+.card {
+  width: 100%;
+  max-width: 960px;
+  padding: 56px 48px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  text-align: left;
+}
+
+.heading {
+  margin: 0;
+  margin-bottom: 16px;
+  font-size: 48px;
+  line-height: 64px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.subheading {
+  margin: 0 0 32px;
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 400;
+  color: #475569;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.input {
+  padding: 14px 16px;
+  border: 1px solid #cbd5f5;
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: 'Outfit', sans-serif;
+  color: #0f172a;
+  background: #f8fafc;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.16);
+}
+
+.submit {
+  margin-top: 8px;
+  padding: 16px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Outfit', sans-serif;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 24px rgba(79, 70, 229, 0.24);
+}
+
+.submit:active {
+  transform: translateY(0);
+  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.24);
+}
+
+.imageArea {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.illustration {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+}
+
+.formArea {
+  flex: 1;
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding: 24px;
+  }
+
+  .card {
+    flex-direction: column;
+    padding: 40px 32px;
+  }
+
+  .heading {
+    font-size: 40px;
+    line-height: 54px;
+  }
+
+  .imageArea {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 16px;
+  }
+
+  .card {
+    padding: 32px 24px;
+    border-radius: 16px;
+  }
+
+  .heading {
+    font-size: 32px;
+    line-height: 44px;
+  }
+
+  .subheading {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
