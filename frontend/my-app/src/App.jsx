@@ -4,7 +4,7 @@ import Login from './pages/signin'
 import SignUp from './pages/signup'
 
 function App() {
-  return <SignUp />;
+  return <Login/>;
 }
 
 export default App
