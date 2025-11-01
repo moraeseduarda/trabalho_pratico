@@ -33,7 +33,7 @@ function Login() {
             />
 
             <button className={styles.submit} type="submit">
-              Sign In
+              Login
             </button>
           </form>
           <p className={styles.cta}>

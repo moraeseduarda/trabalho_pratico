@@ -22,11 +22,25 @@ function SignUp(){
                         </label>
                         <input
                         className={styles.input} 
+                        id = "email"
+                        type = "email"
+                        placeholder='Seu E-Mail'
                          />
-
+                        <label className = {styles.label} htmlFor='senha'>Senha</label>
+                         <input className = {styles.input}
+                         id = "senha"
+                         type = "senha"
+                         placeholder = "Defina sua senha"
+                         />
+                         <button className={styles.submit} type = "submit">Cadastre-se!</button>
                     </form>
                 </div>
-
+                <div className = {styles.imageArea}>
+                    <img 
+                    src={peopleReadingImg} 
+                    alt="" 
+                    className = {styles.illustration}/>
+                </div>
             </section>
         </main>
 
