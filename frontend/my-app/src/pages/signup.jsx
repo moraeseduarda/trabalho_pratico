@@ -33,6 +33,7 @@ function SignUp(){
                          placeholder = "Defina sua senha"
                          />
                          <button className={styles.submit} type = "submit">Cadastre-se!</button>
+                         <p className={styles.cta}>Já tem conta? <a href="/signin">Faça Login</a></p>
                     </form>
                 </div>
                 <div className = {styles.imageArea}>
