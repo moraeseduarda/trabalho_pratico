@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './login-noauth.module.css';
+import styles from './signin.module.css';
 import bookshelfImg from '../assets/images/login-page-bookshelf.png';
 
 function Login() {
@@ -33,12 +33,12 @@ function Login() {
             />
 
             <button className={styles.submit} type="submit">
-              Sign In
+              Login
             </button>
           </form>
           <p className={styles.cta}>
             Ainda não tem conta?{' '}
-            <a className={styles.ctaLink} href=''>
+            <a className={styles.ctaLink} href="/signup">
               Cadastre-se</a> 
           </p>
         </div>
