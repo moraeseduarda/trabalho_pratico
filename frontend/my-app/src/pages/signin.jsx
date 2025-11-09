@@ -1,4 +1,4 @@
-import styles from './signin.module.css';
+import styles from '../styles/sign_in_up.module.css'
 import bookshelfImg from '../assets/images/login-page-bookshelf.png';
 import React, { useState } from 'react';
 
