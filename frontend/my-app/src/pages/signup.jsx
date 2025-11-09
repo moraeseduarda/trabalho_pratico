@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import styles from './signin.module.css';
+import styles from '../styles/sign_in_up.module.css'
 import peopleReadingImg from '../assets/images/people-reading.png';
 
 function SignUp(){
