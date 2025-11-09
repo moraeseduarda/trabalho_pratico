@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
+import validator from 'validator';
 
 const userSchema = new mongoose.Schema(
     // Mongo cria campo id automaticamente
@@ -14,6 +15,12 @@ const userSchema = new mongoose.Schema(
             unique: true,
             lowercase: true,
             trim: true,
+            // Uso da biblioteca validator para fazer verificação de e-mail (formatação válida)
+            // Formatação válida: usuário, símbolo (@) e domínio 
+            validate: {
+                validator: validator.isEmail,
+                message: 'Por favor, insira um email válido'
+            }
         },
         password: {
             type: String,
@@ -21,6 +28,13 @@ const userSchema = new mongoose.Schema(
             minlength: 6,
             // Ao buscar usuário, o campo password não vem junto (mais seguro)
             select: false,
+            // Verificação de senha, regex e no mínimo uma letra maiúscula, minúscula e um número
+            validate: {
+                validator: function(v) {
+                    return validator.matches(v, /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/);
+                },
+                message: 'A senha deve conter ao menos uma letra maiúscula, uma minúscula e um número'
+            }
         }
     },
     {
