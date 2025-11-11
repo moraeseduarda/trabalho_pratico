@@ -3,6 +3,41 @@ import styles from '../styles/sign_in_up.module.css'
 import peopleReadingImg from '../assets/images/people-reading.png';
 
 function SignUp(){
+    const [nome, setNome] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const handleSubmit = async (event) => {
+  event.preventDefault(); // evita reload da página
+
+  // Validação de preenchimento
+  if (!nome || !email || !password) {
+    alert('Preencha todos os campos!');
+    return;
+  }
+
+  try {
+    // Envia os dados para o backend
+    const response = await fetch('http://localhost:5000/api/users/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nome, email, password }),
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      alert('Usuário cadastrado com sucesso!');
+      console.log('Usuário criado:', data);
+    } else {
+      alert(data.message || 'Erro ao cadastrar usuário.');
+    }
+  } catch (error) {
+    alert('Erro de conexão com o servidor.');
+    console.error('Erro no signup:', error);
+  }
+};
+
+
     return(
         // Reutilizando os componentes de estilo de signin, pois é a mesma identidade visual
         <main className={styles.page}>
@@ -10,13 +45,15 @@ function SignUp(){
                 <div className={styles.formArea}>
                     <h1 className={styles.heading}>Comece já!</h1>
                     <p className={styles.subheading}>Faça parte da nossa comunidade de leitores!</p>
-                    <form className={styles.form}> 
+                    <form className={styles.form} onSubmit={handleSubmit}> 
                         <label className={styles.label} htmlFor='nome'>Nome</label>
                         <input
                             className = {styles.input}
                             id = "nome"
-                            type = "nome"
-                            placeholder = "Seu nome completo" 
+                            type = "text"
+                            placeholder = "Seu nome completo"
+                            value = {nome} 
+                            onChange={(e) => setNome(e.target.value)}
                         />
                         <label className = {styles.label} htmlFor='email'>
                             Email
@@ -26,12 +63,16 @@ function SignUp(){
                         id = "email"
                         type = "email"
                         placeholder='Seu E-Mail'
+                        value = {email}
+                        onChange={(e)=>setEmail(e.target.value)}
                          />
                         <label className = {styles.label} htmlFor='senha'>Senha</label>
                          <input className = {styles.input}
                          id = "senha"
-                         type = "senha"
+                         type = "password"
                          placeholder = "Defina sua senha"
+                         value = {password}
+                         onChange={(e)=>setPassword(e.target.value)}
                          />
                          <button className={styles.submit} type = "submit">Cadastre-se!</button>
                          <p className={styles.cta}>Já tem conta? <a href="/signin">Faça Login</a></p>
