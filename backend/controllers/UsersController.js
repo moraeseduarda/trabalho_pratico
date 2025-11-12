@@ -34,25 +34,26 @@ const registraUser = async (req, res) => {
 
 const authUser = async (req, res) => {
     const { email, password } = req.body;
+    console.log("Login recebido:", email, password);
 
     const user = await User.findOne({email}).select('+password');
+    console.log("Usuário encontrado:", user);
 
     if (!user) {
         return res.status(400).json({message: 'Usuário não encontrado'})
     }
 
-    if (user && (await user.matchPassword(password))) {
+    const senhaConfere = await user.matchPassword(password);
+    console.log("Senha confere?", senhaConfere);
+
+    if (senhaConfere) {
         res.json({
-            // id
-            nome: user.nome,
-            email: user.email,
-            // token
+        nome: user.nome,
+        email: user.email,
         });
-
     } else {
-        res.status(400).json({message: 'Email ou senha inválidos.'});
+        res.status(400).json({ message: 'Email ou senha inválidos.' });
     }
-
 };
 
 export {registraUser, authUser};
