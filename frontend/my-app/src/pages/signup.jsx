@@ -21,6 +21,8 @@ function SignUp(){
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nome, email, password }),
+      // Enviar cookie para backend
+      credentials: 'include',
     });
 
     const data = await response.json();

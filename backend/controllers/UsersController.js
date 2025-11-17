@@ -1,4 +1,5 @@
 import User from '../models/User.js'
+import geradorToken from '../middleware/geradorToken.js';
 
 const registraUser = async (req, res) => {
     const { nome, email, password } = req.body;
@@ -17,40 +18,48 @@ const registraUser = async (req, res) => {
         });
 
         if (user) {
+            geradorToken(res, user._id);
+
+            // Erro 201: created -> successful response
             res.status(201).json({
-                // id
                 nome: user.nome,
                 email: user.email,
-                // token
             });
         } else {
             res.status(400).json({message: 'Dados do usuário inválidos.'});
         }
     } catch (error) {
         console.log(error);
+
+        if (error.name === 'ValidationError') {
+        // Pega todas as mensagens de validação
+        const mensagens = Object.values(error.errors).map(err => err.message);
+        return res.status(400).json({ message: mensagens.join(', ') });
+    }
+
         res.status(500).json({message: 'Erro interno do servidor.', erro: error.message});
     }
 };
 
 const authUser = async (req, res) => {
     const { email, password } = req.body;
-    console.log("Login recebido:", email, password);
 
     const user = await User.findOne({email}).select('+password');
-    console.log("Usuário encontrado:", user);
 
     if (!user) {
         return res.status(400).json({message: 'Usuário não encontrado'})
     }
 
     const senhaConfere = await user.matchPassword(password);
-    console.log("Senha confere?", senhaConfere);
 
     if (senhaConfere) {
-        res.json({
+        geradorToken(res, user._id);
+
+        return res.json({
         nome: user.nome,
         email: user.email,
         });
+
     } else {
         res.status(400).json({ message: 'Email ou senha inválidos.' });
     }
