@@ -1,0 +1,35 @@
+.secao {
+  min-height: calc(100vh - 72px);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f7;
+  font-family: 'Outfit', sans-serif;
+  padding: 32px;
+}
+
+.card {
+  width: 100%;
+  max-width: 960px;
+  padding: 56px 48px;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 24px 64px rgba(15, 23, 42, 0.12);
+}
+
+.titulo { 
+  margin: 0 0 16px;
+  font-size: 48px;
+  line-height: 64px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.subtitulo {
+  margin: 0;
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 400;
+  color: #475569;
+}

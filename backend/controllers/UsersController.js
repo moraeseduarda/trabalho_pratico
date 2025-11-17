@@ -45,16 +45,12 @@ const authUser = async (req, res) => {
 
     if (senhaConfere) {
         res.json({
-            // id
-            nome: user.nome,
-            email: user.email,
-            // token
+        nome: user.nome,
+        email: user.email,
         });
-
     } else {
-        res.status(400).json({message: 'Email ou senha inválidos.'});
+        res.status(400).json({ message: 'Email ou senha inválidos.' });
     }
-
 };
 
 export {registraUser, authUser};
