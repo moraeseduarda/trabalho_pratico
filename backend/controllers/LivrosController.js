@@ -42,7 +42,7 @@ const pegaLivroPorId = async (req, res) => {
         const livro = await Livro.findById({ id });
 
         if (livro) {
-            return res.status(200).jspn(livro);
+            return res.status(200).json(livro);
         } else {
             res.status(404).json({msg: 'Livro não encontrado.'});
         }

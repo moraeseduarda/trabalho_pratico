@@ -41,7 +41,9 @@ const authUser = async (req, res) => {
         return res.status(400).json({message: 'Usuário não encontrado'})
     }
 
-    if (user && (await user.matchPassword(password))) {
+    const senhaConfere = await user.matchPassword(password);
+
+    if (senhaConfere) {
         res.json({
             // id
             nome: user.nome,
