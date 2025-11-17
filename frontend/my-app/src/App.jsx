@@ -7,17 +7,17 @@ import Home from './pages/Home';
 
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   
   return (
     //Usando Router para lidar com os redirecionamentos de página
     <BrowserRouter>
       <Routes>
-        <Route path="/signin" element={<Login />} />
+        <Route path="/signin" element={<Login setIsAuthenticated={setIsAuthenticated}  />} />
         <Route path="/signup" element={<SignUp />} />
 
         {/* Se está autenticado vai para Home, senão vai para tela login */} 
-        <Route path="/" element={isAuthenticated ? <Home /> : <Navigate to="/signin" />} />
+        <Route path="/" element={isAuthenticated ? <Home setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/signin" />} />
 
         {/* Rota fallback caso nenhum path bata */}
         <Route path="*" element={<Navigate to="/" />} />

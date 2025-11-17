@@ -1,26 +1,34 @@
 import styles from '../styles/sign_in_up.module.css'
 import bookshelfImg from '../assets/images/login-page-bookshelf.png';
 import React, { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 
-function Login() {
+function Login({setIsAuthenticated}) {
   //Inicializando os elementos do formulário de login
       const [email,setEmail] = useState('')
       const [password,setPassword] = useState('')
-  
+
+      const navigate = useNavigate();
+
       //requisição para o backend
       const handleSubmit = async (event) => {
           event.preventDefault();
-          
+
           try{
               const response = await fetch('http://localhost:5000/api/users/login', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ email, password }),
+              // Enviar cookie para backend
+              credentials: 'include',
           });
   
             const data = await response.json();
             if (response.ok) {
               alert('Login realizado com sucesso!')
+              setIsAuthenticated(true);
+              navigate("/");
+
             } 
             else {
               alert('Usuário ou senha incorretos.')
@@ -30,7 +38,7 @@ function Login() {
               alert('Ocorreu um erro')
           }
       }
-  
+
   return (
     <main className={styles.page}>
       <section className={styles.card}>

@@ -1,10 +1,10 @@
 import HeaderComponent from "../components/header/header";
 import styles from "../styles/home.module.css";
 
-export default function Home() {
+export default function Home({setIsAuthenticated}) {
   return (
     <>
-      <HeaderComponent />
+      <HeaderComponent setIsAuthenticated={setIsAuthenticated}/>
       <div className={styles.secao}>
         <div className={styles.card}>
           <h1 className={styles.titulo}>Bem-vindo(a) à sua estante de livros!</h1>

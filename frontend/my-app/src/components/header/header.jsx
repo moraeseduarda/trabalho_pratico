@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Menu, X, Search, Bell, User,LogOut } from 'lucide-react';
 import styles from '../../styles/header.module.css';
 
-export default function Header() {
+export default function Header({setIsAuthenticated}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinks = [
@@ -11,10 +11,6 @@ export default function Header() {
     { href: "/explorar", text: "Explorar" },
     { href: "/comunidade", text: "Comunidade" },
   ];
-
-  const handleLogout = () => {
-    // Implementar a lógica real de logout aqui
-  };
 
   return (
     <header className={styles.header}>
@@ -65,9 +61,10 @@ export default function Header() {
               <User size={22} />
             </button>
 
+            {/* Botão logout*/}
             <button 
               className={`${styles.iconButton} ${styles.logoutButton}`} 
-              onClick={handleLogout} 
+              onClick={() => setIsAuthenticated(false)}
               aria-label="Sair da conta"
             >
               <LogOut size={22} />

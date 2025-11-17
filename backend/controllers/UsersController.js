@@ -1,4 +1,5 @@
 import User from '../models/User.js'
+import geradorToken from '../middleware/geradorToken.js';
 
 const registraUser = async (req, res) => {
     const { nome, email, password } = req.body;
@@ -17,17 +18,25 @@ const registraUser = async (req, res) => {
         });
 
         if (user) {
+            geradorToken(res, user._id);
+
+            // Erro 201: created -> successful response
             res.status(201).json({
-                // id
                 nome: user.nome,
                 email: user.email,
-                // token
             });
         } else {
             res.status(400).json({message: 'Dados do usuário inválidos.'});
         }
     } catch (error) {
         console.log(error);
+
+        if (error.name === 'ValidationError') {
+        // Pega todas as mensagens de validação
+        const mensagens = Object.values(error.errors).map(err => err.message);
+        return res.status(400).json({ message: mensagens.join(', ') });
+    }
+
         res.status(500).json({message: 'Erro interno do servidor.', erro: error.message});
     }
 };
@@ -44,10 +53,13 @@ const authUser = async (req, res) => {
     const senhaConfere = await user.matchPassword(password);
 
     if (senhaConfere) {
-        res.json({
+        geradorToken(res, user._id);
+
+        return res.json({
         nome: user.nome,
         email: user.email,
         });
+
     } else {
         res.status(400).json({ message: 'Email ou senha inválidos.' });
     }
