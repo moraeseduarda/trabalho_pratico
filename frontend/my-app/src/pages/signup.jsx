@@ -3,6 +3,10 @@ import styles from '../styles/sign_in_up.module.css'
 import peopleReadingImg from '../assets/images/people-reading.png';
 
 function SignUp(){
+
+    // Url backend  
+    const URL_BACKEND = 'https://trabalho-pratico-fgqh.onrender.com';
+
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -17,7 +21,7 @@ function SignUp(){
 
   try {
     // Envia os dados para o backend
-    const response = await fetch('http://localhost:5000/api/users/signup', {
+    const response = await fetch(`${URL_BACKEND}/api/users/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ nome, email, password }),

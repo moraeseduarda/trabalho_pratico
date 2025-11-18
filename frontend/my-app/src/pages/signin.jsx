@@ -4,7 +4,10 @@ import React, { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 
 function Login({setIsAuthenticated}) {
-  //Inicializando os elementos do formulário de login
+    // Url backend  
+    const URL_BACKEND = 'https://trabalho-pratico-fgqh.onrender.com';
+  
+    //Inicializando os elementos do formulário de login
       const [email,setEmail] = useState('')
       const [password,setPassword] = useState('')
 
@@ -15,7 +18,7 @@ function Login({setIsAuthenticated}) {
           event.preventDefault();
 
           try{
-              const response = await fetch('http://localhost:5000/api/users/login', {
+              const response = await fetch(`${URL_BACKEND}/api/users/login`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ email, password }),
