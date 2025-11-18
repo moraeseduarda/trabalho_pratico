@@ -1,7 +1,7 @@
 import styles from '../styles/sign_in_up.module.css'
 import bookshelfImg from '../assets/images/login-page-bookshelf.png';
 import React, { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, Link } from 'react-router-dom';
 
 function Login({setIsAuthenticated}) {
     // Url backend  
@@ -81,8 +81,9 @@ function Login({setIsAuthenticated}) {
           </form>
           <p className={styles.cta}>
             Ainda não tem conta?{' '}
-            <a className={styles.ctaLink} href="/signup">
-              Cadastre-se</a> 
+            <Link className={styles.ctaLink} to="/signup">
+              Cadastre-se
+            </Link> 
           </p>
         </div>
         <div className={styles.imageArea}>

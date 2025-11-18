@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import styles from '../styles/sign_in_up.module.css'
 import peopleReadingImg from '../assets/images/people-reading.png';
+import { Navigate, useNavigate, Link } from 'react-router-dom';
 
 function SignUp(){
 
@@ -81,7 +82,7 @@ function SignUp(){
                          onChange={(e)=>setPassword(e.target.value)}
                          />
                          <button className={styles.submit} type = "submit">Cadastre-se!</button>
-                         <p className={styles.cta}>Já tem conta? <a href="/signin">Faça Login</a></p>
+                         <p className={styles.cta}>Já tem conta? <Link to="/signin">Faça Login</Link></p>
                     </form>
                 </div>
                 <div className = {styles.imageArea}>
