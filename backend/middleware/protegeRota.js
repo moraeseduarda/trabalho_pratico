@@ -1,5 +1,4 @@
-// Função verificadora do token entre rotas autenticação
-
+// Função verificadora do token entre rotas 
 import jwt from "jsonwebtoken";
 
 // Estutura middleware padrão express.js

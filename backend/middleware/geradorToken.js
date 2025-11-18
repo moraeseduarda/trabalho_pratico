@@ -11,21 +11,28 @@ const geradorToken = (res, userId) => {
         const token = jwt.sign(
             // Payload
             {id: userId },
+            
             // Signature
             process.env.JWT_SECRET,
+            
             // Options (configurações)
             {expiresIn: '1d'}
         );
 
+
+    const isProduction = process.env.NODE_ENV === "production";
+
     // cookie() é um método do express para facilitar envio de cookies no header http
     // envia o token em um cookie HTTP-only
+    
     res.cookie("jwt", token, {
         // Faz o cookie ser acessível apenas no servidor web
         httpOnly: true,
+        
         // Flag que exige HTTPS, para aplicação em produção
-        // secure: process.env.NODE_ENV === "production",
         // Essa flag protege informações no cookie, instrui o9 navefador a nunca enviar o cookie de volta ao servidor se a conezão for HTTP (ambiente desenvolvimento )
-        secure: false,
+        secure: isProduction,
+        
         // Strict mais seguro, o cookie só é enviado em requisições no mesmo site onde o cookie foi definido
         sameSite: "strict",
         maxAge: 24 * 60 * 60 * 1000, // 1 dias em milissegundos

@@ -10,6 +10,10 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
+const origensPermitidas = [
+    'https://trabalho-pratico-z409.onrender.com', // deploy
+    'http://localhost:5173' // desenvolvimento
+]
 
 // Middlewares
 
@@ -18,7 +22,13 @@ app.use(cookieParser());
 
 // Permite requisições do frontend
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: (origin, callback) => {
+        if (!origin || origensPermitidas.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Url não permitida'));
+        }
+    },
     credentials: true
 }));
 
