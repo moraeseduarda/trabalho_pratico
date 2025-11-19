@@ -3,7 +3,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import './App.css' 
 import Login from './pages/signin'
 import SignUp from './pages/signup'
-import Home from './pages/Home';
+import Home from './pages/Home'
+import AddLivros from './pages/AddLivros'
 
 
 function App() {
@@ -18,6 +19,11 @@ function App() {
 
         {/* Se está autenticado vai para Home, senão vai para tela login */} 
         <Route path="/" element={isAuthenticated ? <Home setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/signin" />} />
+
+        {/* Nova rota para a página de livros */}
+        <Route path="/livros" element={<AddLivros setIsAuthenticated={setIsAuthenticated} />} />
+        {/* TEMPORÁRIO: Sem autenticação para desenvolvimento */}
+        {/* <Route path="/livros" element={isAuthenticated ? <AddLivros setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/signin" />} /> */}
 
         {/* Rota fallback caso nenhum path bata */}
         <Route path="*" element={<Navigate to="/" />} />

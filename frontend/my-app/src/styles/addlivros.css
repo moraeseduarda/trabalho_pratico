@@ -1,0 +1,143 @@
+/* Página principal */
+.livros-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Cabeçalho da página */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.page-header h1 {
+  font-size: 32px;
+  margin: 0;
+}
+
+.page-header p {
+  color: #666;
+  margin: 0;
+}
+
+/* Grid de livros*/
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* Card de cada livro */
+.book-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s;
+}
+
+/* Imagem do livro */
+.book-image {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Botão de favorito */
+.favorite-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+
+
+/* Informações do livro */
+.book-info {
+  padding: 15px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.book-info h3 {
+  margin: 0 0 5px 0;
+  font-size: 16px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.author {
+  color: #666;
+  margin: 0 0 10px 0;
+  font-size: 14px;
+}
+
+.stars {
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.stock {
+  color: #666;
+  margin: 0;
+  font-size: 14px;
+}
+
+/* Responsivo - 3 colunas em telas médias */
+@media (max-width: 1000px) {
+  .books-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Responsivo - 2 colunas em tablets */
+@media (max-width: 768px) {
+  .books-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Responsivo - 1 coluna em celulares */
+@media (max-width: 480px) {
+  .books-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Botão Adicionar */
+.add-btn {
+  width: 100%;
+  padding: 10px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.3s;
+}
+
+.add-btn:hover {
+  background: #5568d3;
+}
+
+.add-btn:active {
+  transform: scale(0.98);
+}
