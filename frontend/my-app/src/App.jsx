@@ -4,6 +4,7 @@ import './App.css'
 import Login from './pages/signin'
 import SignUp from './pages/signup'
 import Home from './pages/Home';
+import Profile from './pages/Profile';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/signin" element={<Login setIsAuthenticated={setIsAuthenticated}  />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/meu-perfil" element={isAuthenticated ? <Profile setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/signin" />} />
 
         {/* Se está autenticado vai para Home, senão vai para tela login */} 
         <Route path="/" element={isAuthenticated ? <Home setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/signin" />} />

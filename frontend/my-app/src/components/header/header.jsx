@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { Menu, X, Search, Bell, User,LogOut } from 'lucide-react';
+import { Menu, X, Search, Bell, User, LogOut } from 'lucide-react';
+import { useNavigate} from 'react-router-dom';
 import styles from '../../styles/header.module.css';
 
 export default function Header({setIsAuthenticated}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
 
   const navLinks = [
     { href: "/home", text: "Home" },
@@ -11,6 +13,10 @@ export default function Header({setIsAuthenticated}) {
     { href: "/explorar", text: "Explorar" },
     { href: "/comunidade", text: "Comunidade" },
   ];
+
+  const handleProfileClick = () => {
+    navigate('/meu-perfil');
+  }
 
   return (
     <header className={styles.header}>
@@ -57,7 +63,7 @@ export default function Header({setIsAuthenticated}) {
             </button>
 
             {/* Ícone perfil */}
-            <button className={styles.iconButton} aria-label="Profile">
+            <button className={styles.iconButton} onClick={handleProfileClick} aria-label="Profile">
               <User size={22} />
             </button>
 
