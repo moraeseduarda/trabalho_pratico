@@ -1,10 +1,13 @@
 .container {
   display: grid;
   grid-template-columns: 350px 1fr;
-  gap: 2rem;
+  /* gap: 2rem; */
   max-width: 1400px;
-  margin: 2rem auto;
-  padding: 0 2rem;
+  margin: 3rem auto;
+  /* padding: 0 2rem; */
+  align-items: flex-start;
+  border-radius: 10px;
+  /* background-color: #F3F3F3; */
 }
 
 @media (max-width: 968px) {

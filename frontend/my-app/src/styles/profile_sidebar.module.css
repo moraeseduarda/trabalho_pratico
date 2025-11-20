@@ -1,17 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+
 .sidebar {
   background-color: #FFF2DE; /*f8f4ed*/
-  border-radius: 8px;
+  /* border-radius: 8px; */
   padding: 2rem;
-  height: fit-content;
-  position: sticky;
-  top: 100px;
+  height:100%;
+  /* position: sticky; */
+  /* top: 100px; */
+  font-family: 'Outfit', sans-serif;
 }
 
 .avatarContainer {
   display: flex;
   flex-direction: column;
+  gap: 1.5rem;
   align-items: center;
   margin-bottom: 4rem;
+  margin-top: 3rem;
 }
 
 .image {
@@ -33,10 +38,10 @@
 }
 
 .username {
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 600;
   color: #333;
-  margin: 0;
+  margin: 0.5rem 0 0 0;
   text-align: center;
 }
 
@@ -44,8 +49,10 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding-top: 1.5rem;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
   border-top: 2px solid #e0ddd7;
+  border-bottom: 2px solid #e0ddd7;
 }
 
 .statItem {
@@ -56,13 +63,13 @@
 }
 
 .statLabel {
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: #333;
   font-weight: 500;
 }
 
 .statValue {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #333;
 }

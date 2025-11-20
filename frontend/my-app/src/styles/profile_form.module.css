@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+
 .formContainer {
   background-color: #EEEEEE; /*f8f4ed*/
-  border-radius: 8px;
+  /* border-radius: 8px; */
   padding: 2.5rem;
+  font-family: 'Outfit', sans-serif;
 }
 
 .header {
@@ -9,14 +12,14 @@
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-weight: 700;
   color: #333;
   margin: 0 0 0.5rem 0;
 }
 
 .subtitle {
-  font-size: 1rem;
+  font-size: 1.37rem;
   color: #666;
   margin: 0;
 }
@@ -26,7 +29,7 @@
 }
 
 .sectionTitle {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
   color: #333;
   margin: 0 0 1.5rem 0;
@@ -60,7 +63,7 @@
 .select:focus,
 .textarea:focus {
   outline: none;
-  border-color: #8b7355;
+  border-color: #b19d85;
 }
 
 .input::placeholder {
@@ -71,6 +74,12 @@
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
+}
+
+.passwordWrapper .input {
+  width: 100%;
+  padding-right: 3rem;
 }
 
 .eyeButton {
@@ -91,9 +100,11 @@
 }
 
 .textarea {
-  min-height: 100px;
+  min-height: 55px;
   resize: vertical;
   font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .select {
@@ -111,7 +122,6 @@
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 2rem;
-  border-top: 2px solid #e0ddd7;
 }
 
 .cancelButton,
