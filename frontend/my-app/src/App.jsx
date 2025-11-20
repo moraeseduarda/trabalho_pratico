@@ -10,6 +10,8 @@ import Header from './components/header/header'
 import { useAuth } from './context/AuthContext'
 import RotaProtegida from './routes/RotaProtegida';
 import PostComunidade from './components/post_comunidade';
+import Profile from './pages/Profile';
+
 
 function App() {
   const {setIsAuthenticated} = useAuth();

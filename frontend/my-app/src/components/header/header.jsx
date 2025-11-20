@@ -15,10 +15,6 @@ export default function Header({setIsAuthenticated}) {
     { href: "/comunidades", text: "Comunidades" },
   ];
 
-  const handleProfileClick = () => {
-    navigate('/meu-perfil');
-  };
-
   const URL_BACKEND =
     import.meta.env.MODE === "development"
       ? "http://localhost:5000"
@@ -33,6 +29,9 @@ export default function Header({setIsAuthenticated}) {
     setIsAuthenticated(false);
 
   };
+  const handleProfileClick = () => {
+    navigate('/meu-perfil');
+  }
 
   return (
     <header className={styles.header}>
