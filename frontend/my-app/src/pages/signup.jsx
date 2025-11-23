@@ -1,8 +1,7 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import styles from '../styles/sign_in_up.module.css'
 import peopleReadingImg from '../assets/images/people-reading.png';
-import { Navigate, useNavigate, Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 function SignUp(){
 
