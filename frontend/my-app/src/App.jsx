@@ -10,11 +10,9 @@ import Header from './components/header/header'
 import { useAuth } from './context/AuthContext'
 import RotaProtegida from './routes/RotaProtegida';
 import PostComunidade from './components/post_comunidade';
-import Profile from './pages/Profile';
-
 
 function App() {
-  const {setIsAuthenticated} = useAuth();
+  const {setIsAuthenticated, isAuthenticated} = useAuth(); // Adicione isAuthenticated aqui
   const HeaderPadrao = <Header setIsAuthenticated={setIsAuthenticated} />;
 
   return (
@@ -28,8 +26,8 @@ function App() {
 
         {/* Rotas com header */}
 
-          {/* Se está autenticado vai para Home, senão vai para tela login */} 
-          <Route path="/" element={
+        {/* Se está autenticado vai para Home, senão vai para tela login */} 
+        <Route path="/" element={
             <RotaProtegida>
                 <>
                     {HeaderPadrao}
@@ -71,7 +69,6 @@ function App() {
 
         {/* Rota fallback caso nenhum path bata */}
         <Route path="*" element={<Navigate to="/" />} />
-
       </Routes>
     </BrowserRouter>
   );

@@ -12,19 +12,19 @@ export default function ProfileSidebar({ userData}) {
             </div>
 
             <div className={styles.stats}>
-                <div className={styles.statItem}> {/*styles.statItem*/}
-                    <span className={styles.statLabel}>Livros lidos</span> {/*styles.statLabel*/}
-                    <span className={styles.statValue}>32</span> {/*styles.statValue*/}
+                <div className={styles.statItem}> 
+                    <span className={styles.statLabel}>Livros lidos</span> 
+                    <span className={styles.statValue}>32</span> 
                 </div>
                 
-                <div className={styles.statItem}> {/*styles.statItem*/}
-                    <span className={styles.statLabel}>Lendo atualmente</span> {/*styles.statLabel*/}
-                    <span className={styles.statValue}>2</span> {/*styles.statValue*/}
+                <div className={styles.statItem}> 
+                    <span className={styles.statLabel}>Lendo atualmente</span> 
+                    <span className={styles.statValue}>2</span> 
                 </div>
                 
-                <div className={styles.statItem}> {/*styles.statItem*/}
-                    <span className={styles.statLabel}>Favoritos</span> {/*styles.statLabel*/}
-                    <span className={styles.statValue}>8</span> {/*styles.statValue*/}
+                <div className={styles.statItem}> 
+                    <span className={styles.statLabel}>Favoritos</span> 
+                    <span className={styles.statValue}>8</span> 
                 </div>
             </div>
         </div>

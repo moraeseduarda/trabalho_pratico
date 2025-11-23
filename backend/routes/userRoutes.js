@@ -1,7 +1,6 @@
 import express from 'express';
-import { registraUser, authUser, getUserProfile } from '../controllers/UsersController.js';
+import { registraUser, authUser, getUserProfile, updateUserProfile, logoutUser } from '../controllers/UsersController.js';
 import protegeRota from '../middleware/protegeRota.js';
-import { logoutUser } from '../controllers/UsersController.js';
 
 const router = express.Router();
 
