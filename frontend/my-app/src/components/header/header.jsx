@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Menu, X, Search, Bell, User,LogOut } from 'lucide-react';
 import styles from '../../styles/header.module.css';
+import { Link } from "react-router-dom"
 
 export default function Header({setIsAuthenticated}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -9,8 +10,23 @@ export default function Header({setIsAuthenticated}) {
     { href: "/home", text: "Home" },
     { href: "/meu-perfil", text: "Meu perfil" },
     { href: "/explorar", text: "Explorar" },
-    { href: "/comunidade", text: "Comunidade" },
+    { href: "/comunidades", text: "Comunidades" },
   ];
+
+  const URL_BACKEND =
+    import.meta.env.MODE === "development"
+      ? "http://localhost:5000"
+      : "https://trabalho-pratico-fgqh.onrender.com";
+
+  const handleLogout = async () => {
+    await fetch(`${URL_BACKEND}/api/users/logout`, {
+      method: "POST",
+      credentials: "include",
+    });
+
+    setIsAuthenticated(false);
+
+  };
 
   return (
     <header className={styles.header}>
@@ -21,24 +37,25 @@ export default function Header({setIsAuthenticated}) {
 
           {/* Seção Logo */}
           <div className={styles.leftSection}>
-            <a href="/" className={styles.logo}>Logo</a>
+            <p className={styles.logo}>Logo</p>
             
             {/* Links */}
             <div className={styles.desktopMenu}>
               {navLinks.map((link) => (
-                <a 
+                <Link 
                   key={link.href}
-                  href={link.href} 
+                  to={link.href} 
                   className={styles.menuLink}
                 >
                   {link.text}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
 
           {/* Busca */}
           <div className={styles.rightSection}>
+            {/*
             <div className={styles.searchContainer}>
               <input 
                 type="text" 
@@ -46,15 +63,19 @@ export default function Header({setIsAuthenticated}) {
                 className={styles.searchInput}
               />
               <Search size={18} className={styles.searchIcon} />
-            </div>
+            </div> 
+            */}
 
             {/* Ícones */}
 
 
             {/* Ícone notificações */}
+
+            {/*
             <button className={styles.iconButton} aria-label="Notifications">
               <Bell size={22} />
             </button>
+            */}
 
             {/* Ícone perfil */}
             <button className={styles.iconButton} aria-label="Profile">
@@ -64,7 +85,7 @@ export default function Header({setIsAuthenticated}) {
             {/* Botão logout*/}
             <button 
               className={`${styles.iconButton} ${styles.logoutButton}`} 
-              onClick={() => setIsAuthenticated(false)}
+              onClick={handleLogout}
               aria-label="Sair da conta"
             >
               <LogOut size={22} />
@@ -87,22 +108,24 @@ export default function Header({setIsAuthenticated}) {
         {mobileMenuOpen && (
           <div className={styles.mobileMenu} id="mobile-nav-menu">
             {/* Busca */}
+            {/*
             <input 
               type="text" 
               placeholder="Buscar amigos..."
               className={styles.mobileSearchInput}
             />
+            */}
 
             {/* Links */}
             {navLinks.map((link) => (
-                <a 
+                <Link 
                   key={link.href} 
-                  href={link.href} 
+                  to={link.href} 
                   className={styles.menuLink}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {link.text}
-                </a>
+                </Link>
               ))}
           </div>
         )}

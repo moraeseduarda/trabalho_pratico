@@ -65,4 +65,17 @@ const authUser = async (req, res) => {
     }
 };
 
-export {registraUser, authUser};
+const logoutUser = (_req, res) => {
+    const isProduction = process.env.NODE_ENV === "production";
+    
+    res.cookie("jwt", "", {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        expires: new Date(0)
+    });
+    
+    res.status(200).json({message: "Logout realizado com sucesso"});
+};
+
+export {registraUser, authUser, logoutUser};

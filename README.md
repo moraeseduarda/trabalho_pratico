@@ -9,7 +9,7 @@
 ### Descrição Inicial
 *Estante de Livros Virtual*
 
-Uma aplicação onde usuários podem adicionar seus livros favoritos e compartilhar com os amigos (estilo Skoob).
+Uma aplicação onde usuários podem adicionar seus livros favoritos e participar de comunidades literárias (estilo Skoob).
 
 ### Stack
 - M: MongoDB
