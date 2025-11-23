@@ -5,14 +5,20 @@ import mongoose from 'mongoose';
 import connectDB from './config/db.js';
 import userRoutes from './routes/userRoutes.js';
 import cookieParser from 'cookie-parser'
+import { fileURLToPath } from 'url';
+import path from 'path';
 
 const app = express();
 
 const PORT = process.env.PORT || 5000;
 
+// Configuração para __dirname em módulos ES
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const origensPermitidas = [
-    'https://trabalho-pratico-z409.onrender.com', // frontend
-    'http://localhost:5173' // desenvolvimento
+    'https://trabalho-pratico-z409.onrender.com', // frontend deploy
+    'http://localhost:5173' // frontend dev
 ]
 
 // Middlewares
@@ -29,13 +35,6 @@ app.use(cors({
 // Permite json
 app.use(express.json());
 
-// Rotas serão importadas aqui
-
-// Rota teste
-app.get('/', (req, res) => {
-    res.send('API está rodando');
-});
-
 // Rota usuários
 app.use('/api/users', userRoutes);
 
@@ -46,6 +45,14 @@ app.get('/api/status', (req, res) => {
         message: 'Backend está rodando',
         database: mongoose.STATES[mongoose.connection.readyState]
     });
+});
+
+// Serve frontend build
+app.use(express.static(path.join(__dirname, 'frontend/my-app/dist')));
+
+// Fallback: qualquer rota que não seja /api/* vai para index.html
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'frontend/my-app/dist/index.html'));
 });
 
 const inicializaServidor = async () => {
