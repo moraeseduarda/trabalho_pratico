@@ -6,7 +6,8 @@ const protegeRota = (req, res, next) => {
     const token = req.cookies.jwt;
 
     if (!token) {
-        return res.status(400).json({message: "Token não encontrado"});
+        // 401 Unauthorized: Não autenticado
+        return res.status(401).json({message: "Token não encontrado"});
     }
 
     // Decodificar o token
@@ -16,7 +17,7 @@ const protegeRota = (req, res, next) => {
         req.userId = decodificado.id;
         next();
     } catch (error) {
-        return res.status(400).json({message: "Token inválido"});
+        return res.status(401).json({message: "Token inválido"});
     }
 };
 
