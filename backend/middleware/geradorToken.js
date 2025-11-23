@@ -33,8 +33,7 @@ const geradorToken = (res, userId) => {
         // Essa flag protege informações no cookie, instrui o9 navefador a nunca enviar o cookie de volta ao servidor se a conezão for HTTP (ambiente desenvolvimento )
         secure: isProduction,
         
-        // Strict mais seguro, o cookie só é enviado em requisições no mesmo site onde o cookie foi definido
-        sameSite: "strict",
+        sameSite: isProduction ? "none" : "lax",
         maxAge: 24 * 60 * 60 * 1000, // 1 dias em milissegundos
 
     });

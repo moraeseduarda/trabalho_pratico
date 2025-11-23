@@ -1,6 +1,7 @@
 import express from 'express';
 import { registraUser, authUser, getUserProfile } from '../controllers/UsersController.js';
 import protegeRota from '../middleware/protegeRota.js';
+import { logoutUser } from '../controllers/UsersController.js';
 
 const router = express.Router();
 
@@ -23,5 +24,8 @@ router.get('/home', protegeRota, (req, res) => {
         userId: req.userId, // Passar infos do usuário para usar depois em features personalizadas
     });
 });
+
+// Rota logout
+router.post('/logout', logoutUser);
 
 export default router

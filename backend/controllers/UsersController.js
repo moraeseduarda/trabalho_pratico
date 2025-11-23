@@ -65,6 +65,19 @@ const authUser = async (req, res) => {
     }
 };
 
+const logoutUser = (_req, res) => {
+    const isProduction = process.env.NODE_ENV === "production";
+    
+    res.cookie("jwt", "", {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
+        expires: new Date(0)
+    });
+    
+    res.status(200).json({message: "Logout realizado com sucesso"});
+};
+
 const getUserProfile = async (req, res) => {
     try {
         const user = await User.findById(req.userId).select('-senha');
@@ -132,4 +145,4 @@ const updateUserProfile = async (req, res) => {
     }
 };
 
-export {registraUser, authUser, getUserProfile, updateUserProfile};
+export {registraUser, authUser, logoutUser, getUserProfile, updateUserProfile};
