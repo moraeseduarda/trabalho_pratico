@@ -1,9 +1,9 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/comunidades.module.css";
-import { useState } from "react";
 
-// Dados fixos (Hardcoded)
-const comunidadesLiterarias = [
+// Dados fixos para teste, necessita conexão e preparação para receber dados do backend
+export const comunidadesLiterarias = [
   	{ id: 1, nome: "Ficção Científica & Cyberpunk", descricao: "Para amantes de distopias e robôs." },
   	{ id: 2, nome: "Clube dos Clássicos Brasileiros", descricao: "Leitura de Machado e Clarice." },
   	{ id: 3, nome: "Mistério e Crime Real", descricao: "Debates sobre thrillers e true crime." },
@@ -16,13 +16,9 @@ export default function Comunidades({cards = comunidadesLiterarias} ) {
     // Simula que o usuário já participa da comunidade ID 2
     const [comunidadesDoUsuario, setComunidadesDoUsuario] = useState([2]); 
 
-    // Apenas atualiza o array local
+    // Atualiza o array local
     const handleEntrar = (id) => {
         setComunidadesDoUsuario([...comunidadesDoUsuario, id]);
-    };
-
-    const handleSair = (id) => {
-        setComunidadesDoUsuario(comunidadesDoUsuario.filter((item) => item !== id));
     };
 
     // Redireciona para a outra tela
