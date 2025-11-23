@@ -4,7 +4,7 @@
   background-color: #FFF2DE; /*f8f4ed*/
   /* border-radius: 8px; */
   padding: 2rem;
-  height:100%;
+  /* height: 100%; */
   /* position: sticky; */
   /* top: 100px; */
   font-family: 'Outfit', sans-serif;
@@ -13,9 +13,9 @@
 .avatarContainer {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 2rem;
   align-items: center;
-  margin-bottom: 4rem;
+  margin-bottom: 5rem;
   margin-top: 3rem;
 }
 
@@ -53,6 +53,7 @@
   padding-bottom: 2.5rem;
   border-top: 2px solid #e0ddd7;
   border-bottom: 2px solid #e0ddd7;
+  margin-top: auto;
 }
 
 .statItem {
