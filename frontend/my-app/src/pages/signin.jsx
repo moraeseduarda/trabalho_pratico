@@ -1,6 +1,6 @@
 import styles from '../styles/sign_in_up.module.css'
 import bookshelfImg from '../assets/images/login-page-bookshelf.png';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 function Login({setIsAuthenticated}) {

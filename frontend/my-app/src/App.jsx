@@ -5,10 +5,11 @@ import SignUp from './pages/signup'
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 import Comunidades from './pages/comunidades'
-import TelaPosts from './pages/post_comunidade'
+import TelaComunidade from './pages/area_comunidade'
 import Header from './components/header/header'
 import { useAuth } from './context/AuthContext'
 import RotaProtegida from './routes/RotaProtegida';
+import PostComunidade from './components/post_comunidade';
 
 function App() {
   const {setIsAuthenticated} = useAuth();
@@ -45,15 +46,26 @@ function App() {
             </RotaProtegida>
         } />
 
-        {/* Rota para posts, id é o número de identificação da comunidade */}
+        {/* Rota para página individual da comunidade, id é o número de identificação da comunidade */}
         <Route path="/comunidade/:id" element={
             <RotaProtegida>
               <>
-                  {HeaderPadrao}
-                  <TelaPosts />
+                {HeaderPadrao}
+                <TelaComunidade />
               </>
             </RotaProtegida>
         } />
+
+        {/* Rota para  de post individual de uma comunidade*/}
+        <Route path="/comunidade/:id/post/:postId" element={
+          <RotaProtegida>
+            <>
+              {HeaderPadrao}
+              <PostComunidade />
+            </>
+          </RotaProtegida>
+        } />
+
 
         {/* Rota fallback caso nenhum path bata */}
         <Route path="*" element={<Navigate to="/" />} />
