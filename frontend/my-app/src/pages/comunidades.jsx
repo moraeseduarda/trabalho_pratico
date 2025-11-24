@@ -1,24 +1,67 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../styles/comunidades.module.css";
 
-// Dados fixos para teste, necessita conexão e preparação para receber dados do backend
-export const comunidadesLiterarias = [
-  	{ id: 1, nome: "Ficção Científica & Cyberpunk", descricao: "Para amantes de distopias e robôs." },
-  	{ id: 2, nome: "Clube dos Clássicos Brasileiros", descricao: "Leitura de Machado e Clarice." },
-  	{ id: 3, nome: "Mistério e Crime Real", descricao: "Debates sobre thrillers e true crime." },
-  	{ id: 4, nome: "Fantasia Medieval", descricao: "Dragões, magia e Tolkien." },
-];
-
-export default function Comunidades({cards = comunidadesLiterarias} ) {
+export default function Comunidades() {
 	const navigate = useNavigate();
+    const [cards, setCards] = useState([]);
 
-    // Simula que o usuário já participa da comunidade ID 2
-    const [comunidadesDoUsuario, setComunidadesDoUsuario] = useState([2]); 
+    const URL_BACKEND =
+        import.meta.env.MODE === 'development'
+        ? 'http://localhost:5000'
+        : 'https://trabalho-pratico-fgqh.onrender.com';
 
-    // Atualiza o array local
-    const handleEntrar = (id) => {
-        setComunidadesDoUsuario([...comunidadesDoUsuario, id]);
+    const [comunidadesDoUsuario, setComunidadesDoUsuario] = useState([]);
+
+    useEffect(() => {
+        const fetchComunidades = async () => {
+            try {
+                const res = await fetch(`${URL_BACKEND}/api/comunidades`);
+                const data = await res.json();
+                setCards(data);
+            } catch (error) {
+                console.error("Erro ao buscar comunidades:", error);
+            }
+        };
+
+        const fetchUsuario = async () => {
+            try {
+                const res = await fetch(`${URL_BACKEND}/api/users/me`, { credentials: 'include' });
+                if (res.ok) {
+                    const data = await res.json();
+                    const ids = data.comunidades ? data.comunidades.map(c => c._id || c) : [];
+                    setComunidadesDoUsuario(ids);
+                } else {
+                    setComunidadesDoUsuario([]);
+                }
+            } catch (error) {
+                console.error('Erro ao buscar usuário:', error);
+            }
+        };
+
+        fetchComunidades();
+        fetchUsuario();
+    }, []);
+
+
+    const handleEntrar = async (id) => {
+        try {
+            const res = await fetch(`${URL_BACKEND}/api/comunidades/${id}/entrar`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+
+            if (res.ok) {
+                setComunidadesDoUsuario(prev => [...prev, id]);
+                alert('Você entrou na comunidade!');
+            } else {
+                const text = await res.text();
+                console.error('Falha ao entrar na comunidade', res.status, text);
+            }
+        } catch (error) {
+            console.error('Erro ao entrar na comunidade:', error);
+            alert('Erro ao entrar na comunidade');
+        }
     };
 
     // Redireciona para a outra tela
@@ -36,23 +79,23 @@ export default function Comunidades({cards = comunidadesLiterarias} ) {
             <div className={`${styles.secao} ${styles.lista}`}>
                 {cards.map((comunidade) => {
                     // Verifica se o id da comunidade atual está na lista do usuário
-                    const ehMembro = comunidadesDoUsuario.includes(comunidade.id)
+                    const ehMembro = comunidadesDoUsuario.includes(comunidade._id)
                   return(
-                    <div className={styles.card} key={comunidade.id}>
+                    <div className={styles.card} key={comunidade._id}>
                         <h1>{comunidade.nome}</h1>
                         <p>{comunidade.descricao}</p>
 
 						{ehMembro ? (
                             <>
 								{/* Se já participa */}
-								<button className={`${styles.submit} ${styles.botaoAcessar}`} onClick={() => handleAcessar(comunidade.id)}>Acessar comunidade</button>
+								<button className={`${styles.submit} ${styles.botaoAcessar}`} onClick={() => handleAcessar(comunidade._id)}>Acessar comunidade</button>
 
 							</>
 
 						) : (
 							<>
 								{/* Se não participa */}
-								<button className={`${styles.submit} ${styles.botaoEntrar}`} onClick={() => handleEntrar(comunidade.id)}>Entrar</button>
+								<button className={`${styles.submit} ${styles.botaoEntrar}`} onClick={() => handleEntrar(comunidade._id)}>Entrar</button>
 							</>
 						)}
 
