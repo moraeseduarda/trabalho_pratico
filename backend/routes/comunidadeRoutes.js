@@ -1,19 +1,13 @@
 import express from "express";
-import Comunidade from "../models/Comunidade.js"
+import protegeRota from "../middleware/protegeRota.js";
+import { listaComunidades, entrarComunidade } from "../controllers/ComunidadesController.js";
 
 const router = express.Router();
 
-// Retorna lista de comunidades
-// Montado em server.js com app.use('/api/comunidades', comunidadeRoutes)
-// portanto a rota correta para o frontend é GET /api/comunidades
-router.get("/", async (req, res) => {
-    try {
-        const comunidades = await Comunidade.find();
-        res.json(comunidades);
-    } catch (error) {
-        res.status(500).json({message: "Erro ao buscar comunidades"});
-    }
+// GET /api/comunidades
+router.get("/", listaComunidades);
 
-});
+// POST /api/comunidades/:id/entrar (protegido)
+router.post('/:id/entrar', protegeRota, entrarComunidade);
 
 export default router;

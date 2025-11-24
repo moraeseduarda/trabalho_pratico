@@ -5,7 +5,8 @@ import { useNavigate, Link } from 'react-router-dom';
 
 function Login({setIsAuthenticated}) {
     // Url backend  
-    const URL_BACKEND = 'https://trabalho-pratico-fgqh.onrender.com';
+    // const URL_BACKEND = 'https://trabalho-pratico-fgqh.onrender.com';
+    const URL_BACKEND = 'http://localhost:5000';
   
     //Inicializando os elementos do formulário de login
       const [email,setEmail] = useState('')
@@ -26,7 +27,7 @@ function Login({setIsAuthenticated}) {
               credentials: 'include',
           });
   
-            const data = await response.json();
+          const data = await response.json();
             if (response.ok) {
               alert('Login realizado com sucesso!')
               setIsAuthenticated(true);

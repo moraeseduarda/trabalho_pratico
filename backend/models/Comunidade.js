@@ -11,6 +11,11 @@ const comunidadeSchema = new mongoose.Schema(
             type: String,
             required: true,
         }
+        ,
+        membros: {
+            type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+            default: []
+        }
     }
 );
 

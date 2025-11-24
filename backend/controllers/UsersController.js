@@ -68,17 +68,38 @@ const authUser = async (req, res) => {
     }
 };
 
+// Retorna dados do usuário autenticado (inclui comunidades)
+const pegaUserAtual = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId).populate('comunidades');
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        // Retorna campos públicos
+        return res.json({
+            nome: user.nome,
+            email: user.email,
+            comunidades: user.comunidades
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Erro ao buscar usuário' });
+    }
+};
+
 const logoutUser = (_req, res) => {
     const isProduction = process.env.NODE_ENV === "production";
-    
-    res.cookie("jwt", "", {
+
+    // Limpa o cookie com as mesmas flags usadas na criação
+    res.clearCookie('jwt', {
         httpOnly: true,
         secure: isProduction,
-        sameSite: isProduction ? "none" : "lax",
-        expires: new Date(0)
+        sameSite: isProduction ? 'none' : 'lax',
+        path: '/'
     });
-    
+
     res.status(200).json({message: "Logout realizado com sucesso"});
 };
 
-export {registraUser, authUser, logoutUser};
+export {registraUser, authUser, logoutUser, pegaUserAtual};

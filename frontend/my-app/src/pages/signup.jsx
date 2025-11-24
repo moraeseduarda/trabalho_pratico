@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 function SignUp(){
 
     // Url backend  
-    const URL_BACKEND = 'https://trabalho-pratico-fgqh.onrender.com';
+    // const URL_BACKEND = 'https://trabalho-pratico-fgqh.onrender.com';
+    const URL_BACKEND = 'http://localhost:5000';
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
