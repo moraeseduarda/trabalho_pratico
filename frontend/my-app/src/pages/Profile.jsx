@@ -64,10 +64,6 @@ export default function Profile({ setIsAuthenticated }) {
     }
   };
 
-  if (loading) {
-    return <div>Carregando...</div>;
-  }
-
   return (
     <>
       <div className={styles.container}>
