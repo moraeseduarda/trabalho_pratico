@@ -13,6 +13,7 @@ export default function Header({setIsAuthenticated}) {
     { href: "/meu-perfil", text: "Meu perfil" },
     { href: "/explorar", text: "Explorar" },
     { href: "/comunidades", text: "Comunidades" },
+    { href: "/livros", text: "Adicionar livros" },
   ];
 
   const URL_BACKEND =

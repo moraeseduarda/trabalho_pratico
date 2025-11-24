@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import './App.css' 
 import Login from './pages/signin'
 import SignUp from './pages/signup'
-import Home from './pages/Home';
+import Home from './pages/Home'
+import AddLivros from './pages/addLivros'
 import Profile from './pages/Profile';
 import Comunidades from './pages/comunidades'
 import TelaComunidade from './pages/area_comunidade'
@@ -66,7 +67,7 @@ function App() {
             </RotaProtegida>
         } />
 
-        {/* Rota para  de post individual de uma comunidade*/}
+        {/* Rota para post individual de uma comunidade*/}
         <Route path="/comunidade/:id/post/:postId" element={
           <RotaProtegida>
             <>
@@ -76,6 +77,16 @@ function App() {
           </RotaProtegida>
         } />
 
+
+        {/* Rota para adicionar livros*/}
+        <Route path="/livros" element={
+          <RotaProtegida>
+            <>
+              {HeaderPadrao}
+              <AddLivros />
+            </>
+          </RotaProtegida>
+        } />
 
         {/* Rota fallback caso nenhum path bata */}
         <Route path="*" element={<Navigate to="/" />} />
