@@ -1,25 +1,70 @@
+import { useState, useEffect } from 'react';
 import BookCard from '../components/bookcard/BookCard';
 import '../styles/addlivros.css';
 
 function AddLivros() {
-  // 12 livros vazios para exemplo (3 linhas x 4 colunas)
-  const livrosVazios = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+  const [livros, setLivros] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    buscarLivros('bestsellers');
+  }, []);
+
+  const buscarLivros = async (query) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=12&langRestrict=pt`
+      );
+      const data = await response.json();
+      setLivros(data.items || []);
+    } catch (error) {
+      console.error('Erro ao buscar livros:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      buscarLivros(searchTerm);
+    }
+  };
 
   return (
     <div>
-      
       <div className="livros-page">
         {/* Cabeçalho */}
         <div className="page-header">
-          <h1>Books</h1>
+          <h1>Livros</h1>
+          <form onSubmit={handleSearch} className="search-form">
+            <input
+              type="text"
+              placeholder="Buscar livros..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
+            />
+            <button type="submit" className="search-btn">Buscar</button>
+          </form>
         </div>
 
         {/* Grid de livros */}
-        <div className="books-grid">
-          {livrosVazios.map((numero) => (
-            <BookCard key={numero} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="loading">Carregando...</div>
+        ) : (
+          <div className="books-grid">
+            {livros.map((item) => (
+              <BookCard 
+                key={item.id}
+                livro={item.volumeInfo}
+                googleBookId={item.id}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
