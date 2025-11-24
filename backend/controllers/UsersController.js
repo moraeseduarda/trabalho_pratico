@@ -11,10 +11,13 @@ const registraUser = async (req, res) => {
             return res.status(400).json({message: 'Usuário já registrado com esse e-mail.'});
         }
 
+        // Ao registrar um novo usuário, iniciar o array de comunidades vazio
+        // (não permitir que o cliente injete ids de comunidades no momento do signup)
         const user = await User.create({
             nome,
             email,
             password,
+            comunidades: [],
         });
 
         if (user) {

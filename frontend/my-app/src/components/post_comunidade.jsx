@@ -24,7 +24,7 @@ export default function PostComunidade() {
           </button>
 
           <div className={styles.infoComunidade}>
-            <h1>Comunidade {id}</h1>
+            <h1>Comunidade nome</h1>
             <p>Post #{postId}</p>
           </div>
         </div>
