@@ -12,7 +12,7 @@ import RotaProtegida from './routes/RotaProtegida';
 import PostComunidade from './components/post_comunidade';
 
 function App() {
-  const {setIsAuthenticated, isAuthenticated} = useAuth(); // Adicione isAuthenticated aqui
+  const {setIsAuthenticated, isAuthenticated} = useAuth();
   const HeaderPadrao = <Header setIsAuthenticated={setIsAuthenticated} />;
 
   return (

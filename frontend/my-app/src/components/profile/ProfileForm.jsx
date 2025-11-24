@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import styles from "../../styles/profile_form.module.css";
 
-export default function ProfileForm({ userData }) {
+export default function ProfileForm({ userData, onUpdate }) {
   const [nome, setNome] = useState(userData?.nome || "");
   const [username, setUsername] = useState(userData?.username || "");
   const [dataNascimento, setDataNascimento] = useState("");
@@ -13,16 +13,58 @@ export default function ProfileForm({ userData }) {
   const [generosFavoritos, setGenerosFavoritos] = useState("");
   const [idiomaPreferencia, setIdiomaPreferencia] = useState("");
   const [metaAnual, setMetaAnual] = useState("");
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    if (userData) {
+      setNome(userData.nome || "");
+      setUsername(userData.username || "");
+      setEmail(userData.email || "");
+      setDataNascimento(
+        userData.dataNascimento
+          ? new Date(userData.dataNascimento).toISOString().split("T")[0]
+          : ""
+      );
+      setSobre(userData.sobre || "");
+      setGenerosFavoritos(userData.generosFavoritos?.[0] || "");
+      setIdiomaPreferencia(userData.idiomaPreferencia || "");
+      setMetaAnual(userData.metaAnual?.toString() || "");
+    }
+  }, [userData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Lógica para salvar alterações
-    console.log("Salvando alterações...");
+    setMessage("");
+
+    const result = await onUpdate({
+      nome,
+      username,
+      email,
+      dataNascimento,
+      sobre,
+      generosFavoritos,
+      idiomaPreferencia,
+      metaAnual: parseInt(metaAnual)
+    });
+
+    setMessage(result.message);
+    setTimeout(() => setMessage(""), 3000);
   };
 
   const handleCancel = () => {
-    // Resetar formulário ou voltar
-    console.log("Cancelando...");
+    // Resetar para valores originais
+    if (userData) {
+      setNome(userData.nome || "");
+      setUsername(userData.username || "");
+      setEmail(userData.email || "");
+      setDataNascimento(userData.dataNascimento ? userData.dataNascimento.split('T')[0] : "");
+      setSobre(userData.sobre || "");
+      setGenerosFavoritos(userData.generosFavoritos?.[0] || "");
+      setIdiomaPreferencia(userData.idiomaPreferencia || "");
+      setMetaAnual(userData.metaAnual?.toString() || "");
+    }
+    setMessage("Alterações canceladas");
+    setTimeout(() => setMessage(""), 3000);
   };
 
   return (
@@ -32,6 +74,11 @@ export default function ProfileForm({ userData }) {
         <p className={styles.subtitle}>
           Atualize seus dados pessoais e suas preferências de leitura
         </p>
+        {message && (
+          <div className={styles.message}>
+            {message}
+          </div>
+        )}
       </div>
 
       <form onSubmit={handleSubmit}>
