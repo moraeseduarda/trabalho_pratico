@@ -1,7 +1,6 @@
 import express from 'express';
-import { registraUser, authUser, pegaUserAtual } from '../controllers/UsersController.js';
+import { registraUser, authUser, pegaUserAtual, getUserProfile, updateUserProfile, logoutUser } from '../controllers/UsersController.js';
 import protegeRota from '../middleware/protegeRota.js';
-import { logoutUser } from '../controllers/UsersController.js';
 
 const router = express.Router();
 
@@ -10,6 +9,12 @@ router.post('/signup', registraUser);
 
 // Login
 router.post('/login', authUser);
+
+// Buscar perfil (protegida)
+router.get('/profile', protegeRota, getUserProfile);
+
+// Atualizar perfil (protegida)
+router.put('/profile', protegeRota, updateUserProfile);
 
 // Rota protegida
 router.get('/home', protegeRota, (req, res) => {

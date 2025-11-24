@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
+
+.sidebar {
+  background-color: #FFF2DE; /*f8f4ed*/
+  /* border-radius: 8px; */
+  padding: 2rem;
+  /* height: 100%; */
+  /* position: sticky; */
+  /* top: 100px; */
+  font-family: 'Outfit', sans-serif;
+}
+
+.avatarContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 5rem;
+  margin-top: 3rem;
+}
+
+.image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background-color: #d9d9d9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.username {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0.5rem 0 0 0;
+  text-align: center;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+  border-top: 2px solid #e0ddd7;
+  border-bottom: 2px solid #e0ddd7;
+  margin-top: auto;
+}
+
+.statItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.statLabel {
+  font-size: 1.5rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.statValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+}

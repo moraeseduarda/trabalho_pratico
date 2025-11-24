@@ -3,6 +3,7 @@ import './App.css'
 import Login from './pages/signin'
 import SignUp from './pages/signup'
 import Home from './pages/Home';
+import Profile from './pages/Profile';
 import Comunidades from './pages/comunidades'
 import TelaComunidade from './pages/area_comunidade'
 import Header from './components/header/header'
@@ -11,7 +12,7 @@ import RotaProtegida from './routes/RotaProtegida';
 import PostComunidade from './components/post_comunidade';
 
 function App() {
-  const {setIsAuthenticated} = useAuth();
+  const {setIsAuthenticated, isAuthenticated} = useAuth();
   const HeaderPadrao = <Header setIsAuthenticated={setIsAuthenticated} />;
 
   return (
@@ -30,6 +31,17 @@ function App() {
                 <>
                     {HeaderPadrao}
                     <Home />
+                </>
+            </RotaProtegida>
+        } />
+
+          
+          {/* Rota para meu perfil */}
+          <Route path="/meu-perfil" element={
+            <RotaProtegida>
+                <>
+                    {HeaderPadrao}
+                    <Profile />
                 </>
             </RotaProtegida>
         } />
