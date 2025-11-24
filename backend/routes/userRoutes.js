@@ -1,5 +1,5 @@
 import express from 'express';
-import { registraUser, authUser, getUserProfile, updateUserProfile, logoutUser } from '../controllers/UsersController.js';
+import { registraUser, authUser, pegaUserAtual, getUserProfile, updateUserProfile, logoutUser } from '../controllers/UsersController.js';
 import protegeRota from '../middleware/protegeRota.js';
 
 const router = express.Router();
@@ -23,6 +23,9 @@ router.get('/home', protegeRota, (req, res) => {
         userId: req.userId, // Passar infos do usuário para usar depois em features personalizadas
     });
 });
+
+// Retorna o perfil do usuário autenticado
+router.get('/me', protegeRota, pegaUserAtual);
 
 // Rota logout
 router.post('/logout', logoutUser);

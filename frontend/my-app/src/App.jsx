@@ -22,16 +22,26 @@ function App() {
         {/* Rotas sem header */}
         <Route path="/signin" element={<Login setIsAuthenticated={setIsAuthenticated}  />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/meu-perfil" element={isAuthenticated ? <Profile setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/signin" />} />
 
         {/* Rotas com header */}
 
-        {/* Se está autenticado vai para Home, senão vai para tela login */} 
-        <Route path="/" element={
+          {/* Se está autenticado vai para Home, senão vai para tela login */} 
+          <Route path="/" element={
             <RotaProtegida>
                 <>
                     {HeaderPadrao}
                     <Home />
+                </>
+            </RotaProtegida>
+        } />
+
+          
+          {/* Rota para meu perfil */}
+          <Route path="/meu-perfil" element={
+            <RotaProtegida>
+                <>
+                    {HeaderPadrao}
+                    <Profile />
                 </>
             </RotaProtegida>
         } />
@@ -69,6 +79,7 @@ function App() {
 
         {/* Rota fallback caso nenhum path bata */}
         <Route path="*" element={<Navigate to="/" />} />
+
       </Routes>
     </BrowserRouter>
   );

@@ -3,8 +3,10 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import connectDB from './config/db.js';
-import userRoutes from './routes/userRoutes.js';
 import cookieParser from 'cookie-parser'
+
+import userRoutes from './routes/userRoutes.js';
+import comunidadeRoutes from './routes/comunidadeRoutes.js'
 
 const app = express();
 
@@ -38,6 +40,9 @@ app.get('/', (req, res) => {
 
 // Rota usuários
 app.use('/api/users', userRoutes);
+
+// Rota comunidades
+app.use("/api/comunidades", comunidadeRoutes);
 
 
 // Rota de depuração

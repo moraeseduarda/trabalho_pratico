@@ -71,7 +71,6 @@ export default function Profile({ setIsAuthenticated }) {
 
   return (
     <>
-      <HeaderComponent setIsAuthenticated={setIsAuthenticated} />
       <div className={styles.container}>
         <ProfileSidebar userData={userData} />
         <ProfileForm userData={userData} onUpdate={handleUpdateProfile} />

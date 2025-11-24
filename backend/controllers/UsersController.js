@@ -11,10 +11,13 @@ const registraUser = async (req, res) => {
             return res.status(400).json({message: 'Usuário já registrado com esse e-mail.'});
         }
 
+        // Ao registrar um novo usuário, iniciar o array de comunidades vazio
+        // (não permitir que o cliente injete ids de comunidades no momento do signup)
         const user = await User.create({
             nome,
             email,
             password,
+            comunidades: [],
         });
 
         if (user) {
@@ -65,18 +68,6 @@ const authUser = async (req, res) => {
     }
 };
 
-const logoutUser = (_req, res) => {
-    const isProduction = process.env.NODE_ENV === "production";
-    
-    res.cookie("jwt", "", {
-        httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? "none" : "lax",
-        expires: new Date(0)
-    });
-    
-    res.status(200).json({message: "Logout realizado com sucesso"});
-};
 
 const getUserProfile = async (req, res) => {
     try {
@@ -145,4 +136,38 @@ const updateUserProfile = async (req, res) => {
     }
 };
 
-export {registraUser, authUser, logoutUser, getUserProfile, updateUserProfile};
+// Retorna dados do usuário autenticado (inclui comunidades)
+const pegaUserAtual = async (req, res) => {
+    try {
+        const user = await User.findById(req.userId).populate('comunidades');
+        if (!user) {
+            return res.status(404).json({ message: 'Usuário não encontrado' });
+        }
+
+        // Retorna campos públicos
+        return res.json({
+            nome: user.nome,
+            email: user.email,
+            comunidades: user.comunidades
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Erro ao buscar usuário' });
+    }
+};
+
+const logoutUser = (_req, res) => {
+    const isProduction = process.env.NODE_ENV === "production";
+
+    // Limpa o cookie com as mesmas flags usadas na criação
+    res.clearCookie('jwt', {
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? 'none' : 'lax',
+        path: '/'
+    });
+
+    res.status(200).json({message: "Logout realizado com sucesso"});
+};
+
+export {registraUser, authUser, logoutUser, pegaUserAtual, getUserProfile, updateUserProfile};
