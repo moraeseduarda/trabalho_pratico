@@ -1,18 +1,20 @@
 import { useState, useEffect } from 'react';
 
-function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, onFavoritoChange }) {
+function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, onLivroAdicionado, onFavoritoChange }) {
   const [isFavorite, setIsFavorite] = useState(favoritoInicial);
   const [isAdding, setIsAdding] = useState(false);
+  const [localBibliotecaId, setLocalBibliotecaId] = useState(bibliotecaId);
 
   const URL_BACKEND = 
     import.meta.env.MODE === "development"
       ? "http://localhost:5000"
       : "https://trabalho-pratico-fgqh.onrender.com";
 
-  // Atualiza o estado quando a prop muda
+  // Atualiza o estado quando as props mudam
   useEffect(() => {
     setIsFavorite(favoritoInicial);
-  }, [favoritoInicial]);
+    setLocalBibliotecaId(bibliotecaId);
+  }, [favoritoInicial, bibliotecaId]);
 
   const handleAddToLibrary = async () => {
     setIsAdding(true);
@@ -29,16 +31,16 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
           autores: livro.authors,
           capa: livro.imageLinks?.thumbnail,
           descricao: livro.description,
-          status: 'quero_ler'
+          status: 'lido'
         })
       });
 
       if (response.ok) {
         const data = await response.json();
         alert('Livro adicionado à biblioteca!');
-        // Opcional: callback para atualizar lista
-        if (onFavoritoChange) {
-          onFavoritoChange(data);
+        setLocalBibliotecaId(data._id);
+        if (onLivroAdicionado) {
+          onLivroAdicionado(data);
         }
       } else {
         const errorData = await response.json();
@@ -53,19 +55,18 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
   };
 
   const toggleFavorite = async () => {
-    // Se o livro ainda não está na biblioteca, não pode favoritar
-    if (!bibliotecaId) {
+    // Use localBibliotecaId em vez de bibliotecaId
+    if (!localBibliotecaId) {
       alert('Adicione o livro à biblioteca primeiro!');
       return;
     }
 
     const novoFavorito = !isFavorite;
     
-    // Atualiza o estado local otimisticamente
     setIsFavorite(novoFavorito);
 
     try {
-      const response = await fetch(`${URL_BACKEND}/api/users/biblioteca/${bibliotecaId}`, {
+      const response = await fetch(`${URL_BACKEND}/api/users/biblioteca/${localBibliotecaId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -100,7 +101,7 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
         <button 
           className={`favorite-btn ${isFavorite ? 'active' : ''}`}
           onClick={toggleFavorite}
-          title={bibliotecaId ? (isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos') : 'Adicione à biblioteca primeiro'}
+          title={localBibliotecaId ? (isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos') : 'Adicione à biblioteca primeiro'}
         >
           {isFavorite ? '♥' : '♡'}
         </button>
@@ -122,9 +123,9 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
         <button 
           className="add-btn"
           onClick={handleAddToLibrary}
-          disabled={isAdding}
+          disabled={isAdding || localBibliotecaId} // Desabilita se já está na biblioteca
         >
-          {isAdding ? 'Adicionando...' : 'Adicionar ao Perfil'}
+          {localBibliotecaId ? 'Na Biblioteca' : (isAdding ? 'Adicionando...' : 'Adicionar ao Perfil')}
         </button>
       </div>
     </div>
