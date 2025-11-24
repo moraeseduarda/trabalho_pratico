@@ -20,10 +20,7 @@ function App() {
         {/* Se está autenticado vai para Home, senão vai para tela login */} 
         <Route path="/" element={isAuthenticated ? <Home setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/signin" />} />
 
-        {/* Nova rota para a página de livros */}
-        <Route path="/livros" element={<AddLivros setIsAuthenticated={setIsAuthenticated} />} />
-        {/* TEMPORÁRIO: Sem autenticação para desenvolvimento */}
-        {/* <Route path="/livros" element={isAuthenticated ? <AddLivros setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/signin" />} /> */}
+        <Route path="/livros" element={isAuthenticated ? <AddLivros setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/signin" />} />
 
         {/* Rota fallback caso nenhum path bata */}
         <Route path="*" element={<Navigate to="/" />} />
