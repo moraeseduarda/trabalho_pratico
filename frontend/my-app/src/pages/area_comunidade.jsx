@@ -41,7 +41,7 @@ export default function TelaComunidade() {
                 });
                 if (res.ok) {
                     const data = await res.json();
-                    setPosts(data);
+                    setPost(data);
                 } else {
                     console.error('Erro ao buscar posts');
                 }
@@ -53,29 +53,8 @@ export default function TelaComunidade() {
         fetchPosts();
     }, [id]);
 
-    const [posts, setPosts] = useState([
-        {
-        id: 1,
-        autor: 'João Silva',
-        titulo: 'Qual o melhor livro de Machado de Assis para iniciantes?',
-        conteudo: 'Estou começando a ler os clássicos brasileiros e queria uma recomendação de qual obra do Machado seria ideal para começar. Pensei em Dom Casmurro, mas ouvi dizer que Memórias Póstumas é melhor...',
-        },
-        {
-        id: 2,
-        autor: 'Maria Santos',
-        titulo: 'Discussão: A importância de Clarice Lispector na literatura brasileira',
-        conteudo: 'Gostaria de abrir uma discussão sobre a relevância de Clarice Lispector. Para mim, ela revolucionou a forma de escrever em português. O que vocês acham?',
-        },
-        {
-        id: 3,
-        autor: 'Pedro Costa',
-        titulo: 'Acabei de ler Grande Sertão: Veredas',
-        conteudo: 'Que experiência incrível! A narrativa do Guimarães Rosa é hipnotizante. Alguém mais se sentiu assim? Vamos conversar sobre esse clássico!',
-        }
-    ]);
-
     const [showPost, setShowPost] = useState(false);
-    const [post, setPost] = useState({ titulo: '', conteudo: '' });
+    const [posts, setPost] = useState([]);
 
     const handlePost = async (e) => {
         e.preventDefault();
@@ -92,7 +71,7 @@ export default function TelaComunidade() {
                 const criado = await res.json();
                 // atualiza lista local, colocando o novo post no topo
                 setPosts(prev => [criado, ...prev]);
-                setPost({ titulo: '', conteudo: '' });
+                setPosts({ titulo: '', conteudo: '' });
                 setShowPost(false);
                 alert('Publicação criada com sucesso');
             } else if (res.status === 401) {
@@ -139,7 +118,7 @@ export default function TelaComunidade() {
             <ModalPostagem
                 showPost={showPost}
                 setShowPost={setShowPost}
-                post={post}
+                post={posts}
                 setPost={setPost}
                 handlePost={handlePost}
             />
