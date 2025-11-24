@@ -39,6 +39,26 @@ const userSchema = new mongoose.Schema(
                 },
                 message: 'A senha deve conter ao menos uma letra maiúscula, uma minúscula e um número'
             }
+        },
+        dataNascimento: {
+            type: Date
+        },
+        sobre: {
+            type: String,
+            maxlength: 500
+        },
+        generosFavoritos: [{
+            type: String
+        }],
+        idiomaPreferencia: {
+            type: String
+        },
+        metaAnual: {
+            type: Number,
+        },
+        fotoPerfil: {
+            type: String,
+            default: ''
         }
     },
     {

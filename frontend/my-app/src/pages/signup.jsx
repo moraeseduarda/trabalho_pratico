@@ -4,7 +4,7 @@ import peopleReadingImg from '../assets/images/people-reading.png';
 import { Link } from 'react-router-dom';
 
 function SignUp(){
-
+  
     const URL_BACKEND =
       import.meta.env.MODE === 'development'
         ? 'http://localhost:5000'
