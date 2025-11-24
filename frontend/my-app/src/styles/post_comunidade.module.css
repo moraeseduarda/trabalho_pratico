@@ -1,0 +1,75 @@
+.header {
+  background-color: white;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.conteudoHeader {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 1rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.botaoVoltar {
+  color: #4b5563;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+
+.botaoVoltar:hover {
+  color: #374151;
+}
+
+.infoComunidade h1 {
+  font-weight: 700;
+  color: #7c3aed;
+}
+
+.infoComunidade p {
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.main {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+}
+
+.cardPost {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.postHeader {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.nomeAutor {
+  font-weight: 600;
+  color: #111827;
+  font-size: 1.125rem;
+}
+
+.tituloPost {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 1rem;
+}
+
+.conteudoPost {
+  color: #374151;
+  line-height: 1.5;
+  white-space: pre-line;
+  margin-bottom: 1.5rem;
+}

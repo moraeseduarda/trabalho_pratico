@@ -1,0 +1,98 @@
+.secaoNovoPost {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.botaoNovoPost {
+  background-color: white;
+  border: 2px dashed #d1d5db;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  width: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.botaoNovoPost:hover {
+  background-color: #faf5ff;
+  border-color: #c084fc;
+}
+
+.iconeNovoPost {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #9333ea;
+  transition: transform 0.2s ease;
+}
+
+.botaoNovoPost:hover .iconeNovoPost {
+  transform: scale(1.10);
+}
+
+.textoNovoPost {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #4b5563;
+  transition: color 0.2s ease;
+}
+
+.botaoNovoPost:hover .textoNovoPost {
+  color: #9333ea;
+}
+
+.listaPosts {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.cardPost {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  transition: box-shadow 0.2s;
+  width: 100%;
+  max-width: 1000px;
+  cursor: pointer;
+}
+
+.cardPost:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.postHeader {
+  display: flex;
+  align-items: start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.nomeAutor {
+  font-weight: 600;
+  color: #111827;
+}
+
+.postTitulo {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #111827;
+  margin-bottom: 0.5rem;
+}
+
+.postConteudo {
+  color: #374151;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}

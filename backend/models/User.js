@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema(
                 message: 'Por favor, insira um email válido'
             }
         },
+        comunidades: {
+                type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comunidade" }],
+                default: []
+        },
         password: {
             type: String,
             required: true,

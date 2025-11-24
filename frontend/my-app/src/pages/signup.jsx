@@ -1,12 +1,14 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import styles from '../styles/sign_in_up.module.css'
 import peopleReadingImg from '../assets/images/people-reading.png';
-import { Navigate, useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function SignUp(){
 
-    // Url backend  
-    const URL_BACKEND = 'https://trabalho-pratico-fgqh.onrender.com';
+    const URL_BACKEND =
+      import.meta.env.MODE === 'development'
+        ? 'http://localhost:5000'
+        : 'https://trabalho-pratico-fgqh.onrender.com';
 
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');

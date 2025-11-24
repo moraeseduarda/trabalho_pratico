@@ -3,15 +3,17 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import connectDB from './config/db.js';
-import userRoutes from './routes/userRoutes.js';
 import cookieParser from 'cookie-parser'
+
+import userRoutes from './routes/userRoutes.js';
+import comunidadeRoutes from './routes/comunidadeRoutes.js'
 
 const app = express();
 
 const PORT = process.env.PORT || 5000;
 
 const origensPermitidas = [
-    'https://trabalho-pratico-z409.onrender.com', // deploy
+    'https://trabalho-pratico-z409.onrender.com', // frontend
     'http://localhost:5173' // desenvolvimento
 ]
 
@@ -22,13 +24,7 @@ app.use(cookieParser());
 
 // Permite requisições do frontend
 app.use(cors({
-    origin: (origin, callback) => {
-        if (!origin || origensPermitidas.includes(origin)) {
-            callback(null, true);
-        } else {
-            callback(new Error('Url não permitida'));
-        }
-    },
+    origin: origensPermitidas,
     credentials: true
 }));
 
@@ -44,6 +40,9 @@ app.get('/', (req, res) => {
 
 // Rota usuários
 app.use('/api/users', userRoutes);
+
+// Rota comunidades
+app.use("/api/comunidades", comunidadeRoutes);
 
 
 // Rota de depuração
