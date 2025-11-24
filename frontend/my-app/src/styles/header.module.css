@@ -28,7 +28,7 @@
   gap: 3rem;
 }
 
-.logo {
+/* .logo {
   font-size: 1.75rem;
   font-weight: 600;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
@@ -36,6 +36,23 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   text-decoration: none;
+} */
+
+.logoLink {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.logoLink:hover {
+  opacity: 0.8;
+}
+
+.logoImage {
+  height: 95px;
+  width: auto;
+  object-fit: contain;
 }
 
 .desktopMenu {
@@ -191,5 +208,12 @@
   
   .rightSection {
     gap: 0.5rem;
+  }
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .logoImage {
+    height: 80px;
   }
 }
