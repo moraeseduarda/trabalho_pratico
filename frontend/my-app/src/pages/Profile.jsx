@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import HeaderComponent from "../components/header/header";
 import ProfileSidebar from "../components/profile/ProfileSidebar";
 import ProfileForm from "../components/profile/ProfileForm";
 import styles from "../styles/profile.module.css";
@@ -11,7 +10,7 @@ export default function Profile({ setIsAuthenticated }) {
   const URL_BACKEND = 
     import.meta.env.MODE === "development"
       ? "http://localhost:5000"
-      : "https://trabalho-pratico-z409.onrender.com";
+      : "https://trabalho-pratico-fgqh.onrender.com";
 
   useEffect(() => {
     const fetchUserData = async () => {
