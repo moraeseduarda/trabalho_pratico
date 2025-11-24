@@ -6,9 +6,10 @@ export default function Comunidades() {
 	const navigate = useNavigate();
     const [cards, setCards] = useState([]);
 
-    // Lembrar de mudar URL, para url backend do deploy
-    // const URL_BACKEND = 'https://trabalho-pratico-fgqh.onrender.com';
-    const URL_BACKEND = 'http://localhost:5000';
+    const URL_BACKEND =
+        import.meta.env.MODE === 'development'
+        ? 'http://localhost:5000'
+        : 'https://trabalho-pratico-fgqh.onrender.com';
 
     const [comunidadesDoUsuario, setComunidadesDoUsuario] = useState([]);
 

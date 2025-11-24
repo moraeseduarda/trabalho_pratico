@@ -1,17 +1,37 @@
-import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import styles from '../styles/post_comunidade.module.css';
 
 export default function PostComunidade() {
   const { id, postId } = useParams();
 
-  const [post] = useState({
-    id: 1,
-    autor: 'João Silva',
-    titulo: 'Qual o melhor livro de Machado de Assis para iniciantes?',
-    conteudo: 'Estou começando a ler os clássicos brasileiros e queria uma recomendação de qual obra do Machado seria ideal para começar. Pensei em Dom Casmurro, mas ouvi dizer que Memórias Póstumas é melhor.\n\nAlguém que já leu ambos poderia me ajudar? Também aceito outras sugestões de obras do autor que sejam mais acessíveis para quem está começando.'
-  });
+  const navigate = useNavigate();
+
+  const [post, setPost] = useState(null);
+
+  const URL_BACKEND =
+    import.meta.env.MODE === 'development'
+      ? 'http://localhost:5000'
+      : 'https://trabalho-pratico-fgqh.onrender.com';
+
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const res = await fetch(`${URL_BACKEND}/api/comunidades/${id}/posts/${postId}`);
+        if (res.ok) {
+          const data = await res.json();
+          setPost(data);
+        } else {
+          console.error('Post não encontrado');
+        }
+      } catch (err) {
+        console.error('Erro ao buscar post:', err);
+      }
+    };
+
+    fetchPost();
+  }, [id, postId]);
 
   return (
     <div className={"main"}>
@@ -19,12 +39,12 @@ export default function PostComunidade() {
       {/* SubHeader com informações da comunidade e post */}
       <header className={styles.header}>
         <div className={styles.conteudoHeader}>
-          <button className={styles.botaoVoltar}>
+          <button className={styles.botaoVoltar} onClick={() => navigate(-1)}>
             <ArrowLeft />
           </button>
 
           <div className={styles.infoComunidade}>
-            <h1>Comunidade nome</h1>
+            <h1>{post ? post.comunidade?.nome || 'Comunidade' : 'Comunidade'}</h1>
             <p>Post #{postId}</p>
           </div>
         </div>
@@ -35,13 +55,13 @@ export default function PostComunidade() {
           <div className={styles.postHeader}>
             <div>
               <div>
-                <span className={styles.nomeAutor}>{post.autor}</span>
+                <span className={styles.nomeAutor}>{post ? (post.autor?.nome || post.autor) : 'Usuário'}</span>
               </div>
             </div>
           </div>
 
-          <h1 className={styles.tituloPost}>{post.titulo}</h1>
-          <div className={styles.conteudoPost}>{post.conteudo}</div>
+          <h1 className={styles.tituloPost}>{post ? post.titulo : ''}</h1>
+          <div className={styles.conteudoPost}>{post ? post.conteudo : ''}</div>
         </div>
       </main>
     </div>
