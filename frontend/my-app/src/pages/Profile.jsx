@@ -5,6 +5,7 @@ import styles from "../styles/profile.module.css";
 
 export default function Profile({ setIsAuthenticated }) {
   const [userData, setUserData] = useState(null);
+  const [biblioteca, setBiblioteca] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const URL_BACKEND = 
@@ -13,28 +14,40 @@ export default function Profile({ setIsAuthenticated }) {
       : "https://trabalho-pratico-fgqh.onrender.com";
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(`${URL_BACKEND}/api/users/profile`, {
+        // Buscar dados do usuário
+        const userResponse = await fetch(`${URL_BACKEND}/api/users/profile`, {
           method: "GET",
           credentials: "include",
         });
 
-        if (!response.ok) {
+        if (!userResponse.ok) {
           throw new Error('Erro ao buscar perfil');
         }
 
-        const data = await response.json();
-        setUserData(data);
+        const userData = await userResponse.json();
+        setUserData(userData);
+
+        // Buscar biblioteca
+        const bibliotecaResponse = await fetch(`${URL_BACKEND}/api/users/biblioteca`, {
+          method: "GET",
+          credentials: "include",
+        });
+
+        if (bibliotecaResponse.ok) {
+          const bibliotecaData = await bibliotecaResponse.json();
+          setBiblioteca(bibliotecaData);
+        }
       } catch (error) {
-        console.error("Erro ao buscar dados do usuário:", error);
+        console.error("Erro ao buscar dados:", error);
         setIsAuthenticated(false);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchUserData();
+    fetchData();
   }, [setIsAuthenticated, URL_BACKEND]);
 
   const handleUpdateProfile = async (updatedData) => {
@@ -67,7 +80,7 @@ export default function Profile({ setIsAuthenticated }) {
   return (
     <>
       <div className={styles.container}>
-        <ProfileSidebar userData={userData} />
+        <ProfileSidebar userData={userData} biblioteca={biblioteca} />
         <ProfileForm userData={userData} onUpdate={handleUpdateProfile} />
       </div>
     </>

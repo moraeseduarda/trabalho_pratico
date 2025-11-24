@@ -3,6 +3,7 @@ import { Menu, X, User, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../../styles/header.module.css';
 import { Link } from "react-router-dom"
+import logo from '../../assets/images/bookbox-logo.png';
 
 export default function Header({setIsAuthenticated}) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -53,7 +54,10 @@ export default function Header({setIsAuthenticated}) {
 
           {/* Seção Logo */}
           <div className={styles.leftSection}>
-            <p className={styles.logo}>Logo</p>
+            {/* <p className={styles.logo}>Logo</p> */}
+            <Link to="/" className={styles.logoLink}>
+              <img src={logo} alt="BookBox" className={styles.logoImage} />
+            </Link>
             
             {/* Links */}
             <div className={styles.desktopMenu}>

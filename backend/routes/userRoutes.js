@@ -1,5 +1,6 @@
 import express from 'express';
 import { registraUser, authUser, pegaUserAtual, getUserProfile, updateUserProfile, logoutUser } from '../controllers/UsersController.js';
+import { adicionarLivro, getLivrosUsuario, atualizarStatusLivro } from '../controllers/BibliotecaController.js';
 import protegeRota from '../middleware/protegeRota.js';
 
 const router = express.Router();
@@ -29,5 +30,14 @@ router.get('/me', protegeRota, pegaUserAtual);
 
 // Rota logout
 router.post('/logout', logoutUser);
+
+// Adicionar livro à biblioteca
+router.post('/biblioteca', protegeRota, adicionarLivro);
+
+// Listar livros da biblioteca
+router.get('/biblioteca', protegeRota, getLivrosUsuario);
+
+// Atualizar status do livro
+router.put('/biblioteca/:id', protegeRota, atualizarStatusLivro);
 
 export default router
