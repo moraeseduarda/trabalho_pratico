@@ -11,6 +11,7 @@ import Header from './components/header/header'
 import { useAuth } from './context/AuthContext'
 import RotaProtegida from './routes/RotaProtegida';
 import PostComunidade from './components/post_comunidade';
+import BibliotecaUser from './pages/bibliotecaUser'; // Importe a nova página
 
 function App() {
   const {setIsAuthenticated, isAuthenticated} = useAuth();
@@ -84,6 +85,16 @@ function App() {
             <>
               {HeaderPadrao}
               <AddLivros />
+            </>
+          </RotaProtegida>
+        } />
+
+        {/* NOVA ROTA: Biblioteca do Usuário */}
+        <Route path="/explorar" element={
+          <RotaProtegida>
+            <>
+              {HeaderPadrao}
+              <BibliotecaUser />
             </>
           </RotaProtegida>
         } />
