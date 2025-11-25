@@ -6,6 +6,7 @@ function BibliotecaUser() {
   const [livros, setLivros] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState(false);
+  const [filtroAtivo, setFiltroAtivo] = useState('todos'); // Novo estado para o filtro
 
   const URL_BACKEND =
     import.meta.env.MODE === 'development'
@@ -28,8 +29,6 @@ function BibliotecaUser() {
       }
 
       const dados = await resposta.json();
-      
-      console.log("Dados recebidos do backend:", dados);
 
       const livrosFormatados = Array.isArray(dados)
         ? dados
@@ -43,13 +42,12 @@ function BibliotecaUser() {
                 capa: item.capa,
                 imagemCapa: item.imagemCapa,
                 googleBookId: item.googleBookId,
-                status: item.status, 
+                status: item.status,
               };
             })
             .filter(Boolean)
         : [];
 
-      console.log("Livros formatados:", livrosFormatados);
       setLivros(livrosFormatados);
     } catch (error) {
       console.error("Erro:", error);
@@ -59,10 +57,43 @@ function BibliotecaUser() {
     }
   };
 
+  // Filtra os livros baseado no filtro ativo
+  const livrosFiltrados = filtroAtivo === 'todos'
+    ? livros
+    : livros.filter(livro => livro.status === filtroAtivo);
+
   return (
     <div className="biblioteca-page">
       <div className="page-header">
         <h1>Minha Biblioteca</h1>
+      </div>
+
+      {/* Botões de Filtro */}
+      <div className="filtros-container">
+        <button
+          className={`filtro-btn ${filtroAtivo === 'todos' ? 'active' : ''}`}
+          onClick={() => setFiltroAtivo('todos')}
+        >
+          📚 Todos
+        </button>
+        <button
+          className={`filtro-btn ${filtroAtivo === 'lendo' ? 'active' : ''}`}
+          onClick={() => setFiltroAtivo('lendo')}
+        >
+          📖 Lendo
+        </button>
+        <button
+          className={`filtro-btn ${filtroAtivo === 'quero_ler' ? 'active' : ''}`}
+          onClick={() => setFiltroAtivo('quero_ler')}
+        >
+          🔖 Quero Ler
+        </button>
+        <button
+          className={`filtro-btn ${filtroAtivo === 'lido' ? 'active' : ''}`}
+          onClick={() => setFiltroAtivo('lido')}
+        >
+          ✅ Lido
+        </button>
       </div>
 
       {carregando && <p className="loading-msg">Carregando...</p>}
@@ -70,16 +101,16 @@ function BibliotecaUser() {
 
       {!carregando && !erro && (
         <div className="books-grid">
-          {livros.length > 0 ? (
-            livros.map((livro) => (
-              <BookCard 
-                key={livro.id} 
-                livro={livro} 
-                mostrarStatus={true}  // Mostra o StatusBadge
+          {livrosFiltrados.length > 0 ? (
+            livrosFiltrados.map((livro) => (
+              <BookCard
+                key={livro.id}
+                livro={livro}
+                mostrarStatus={true}
               />
             ))
           ) : (
-            <p className="empty-msg">Nada para ver aqui.</p>
+            <p className="empty-msg">Nenhum livro nesta categoria.</p>
           )}
         </div>
       )}
