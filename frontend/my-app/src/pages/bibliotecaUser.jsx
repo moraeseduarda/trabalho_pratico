@@ -36,6 +36,7 @@ function BibliotecaUser() {
               if (!item) return null;
 
               return {
+                _id: item._id,
                 id: item._id,
                 titulo: item.titulo,
                 autores: item.autores,
@@ -43,6 +44,7 @@ function BibliotecaUser() {
                 imagemCapa: item.imagemCapa,
                 googleBookId: item.googleBookId,
                 status: item.status,
+                favorito: item.favorito
               };
             })
             .filter(Boolean)
@@ -55,6 +57,18 @@ function BibliotecaUser() {
     } finally {
       setCarregando(false);
     }
+  };
+
+  const handleFavoritoChange = (livroAtualizado) => {
+    setLivros((prevLivros) => 
+      prevLivros.map((livro) => {
+        // Encontra o livro que foi alterado e atualiza o status de favorito
+        if (livro._id === livroAtualizado._id) {
+            return { ...livro, favorito: livroAtualizado.favorito };
+        }
+        return livro;
+      })
+    );
   };
 
   // Filtra os livros baseado no filtro ativo
@@ -106,7 +120,7 @@ function BibliotecaUser() {
               <BookCard
                 key={livro.id}
                 livro={livro}
-                mostrarStatus={true}
+                onFavoritoChange={handleFavoritoChange}
               />
             ))
           ) : (

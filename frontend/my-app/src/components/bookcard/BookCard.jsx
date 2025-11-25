@@ -1,20 +1,33 @@
 import { useState, useEffect } from 'react';
 import StatusBadge from '../StatusBadge/StatusBadge';
 
-function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, onLivroAdicionado, onFavoritoChange, mostrarStatus = false }) {
-  const [isFavorite, setIsFavorite] = useState(favoritoInicial);
-  const [isAdding, setIsAdding] = useState(false);
-  const [localBibliotecaId, setLocalBibliotecaId] = useState(bibliotecaId);
+function BookCard({ livro, bibliotecaId, favoritoInicial, onFavoritoChange}) {
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [localBibliotecaId, setLocalBibliotecaId] = useState(bibliotecaId || livro?._id);
 
-  const URL_BACKEND = 
+  const URL_BACKEND =
     import.meta.env.MODE === "development"
       ? "http://localhost:5000"
       : "https://trabalho-pratico-fgqh.onrender.com";
 
   useEffect(() => {
-    setIsFavorite(favoritoInicial);
-    setLocalBibliotecaId(bibliotecaId);
-  }, [favoritoInicial, bibliotecaId]);
+      let statusFinal = false;
+
+      if (typeof favoritoInicial !== 'undefined') {
+        statusFinal = favoritoInicial;
+      } else if (livro && typeof livro.favorito !== 'undefined') {
+        statusFinal = livro.favorito;
+      }
+
+      setIsFavorite(statusFinal);
+
+      if (bibliotecaId) {
+        setLocalBibliotecaId(bibliotecaId);
+      } else if (livro?._id) {
+        setLocalBibliotecaId(livro._id);
+      }
+
+    }, [favoritoInicial, bibliotecaId, livro]); 
 
   // --- LÓGICA DE EXIBIÇÃO ---
   const titulo = livro?.title || livro?.titulo || 'Título não disponível';
@@ -30,50 +43,7 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
   
   const imagem = livro?.capa || livro?.imagemCapa || livro?.imageLinks?.thumbnail || '';
 
-  const handleAddToLibrary = async () => {
-    setIsAdding(true);
-    try {
-      const response = await fetch(`${URL_BACKEND}/api/users/biblioteca`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ 
-          googleBookId,
-          titulo: livro.title,
-          autores: livro.authors,
-          capa: livro.imageLinks?.thumbnail,
-          descricao: livro.description,
-          status: 'quero_ler'
-        })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        alert('Livro adicionado à biblioteca!');
-        setLocalBibliotecaId(data._id);
-        if (onLivroAdicionado) {
-          onLivroAdicionado(data);
-        }
-      } else {
-        const errorData = await response.json();
-        alert(errorData.message || 'Erro ao adicionar livro.');
-      }
-    } catch (error) {
-      console.error('Erro:', error);
-      alert('Erro ao adicionar livro.');
-    } finally {
-      setIsAdding(false);
-    }
-  };
-
   const toggleFavorite = async () => {
-    if (!localBibliotecaId) {
-      alert('Adicione o livro à biblioteca primeiro!');
-      return;
-    }
-
     const novoFavorito = !isFavorite;
     setIsFavorite(novoFavorito);
 
@@ -138,19 +108,7 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
       <div className="book-info">
         <h3>{titulo}</h3>
         <p className="author">{autor}</p>
-        
-        {/* Mostra status OU botão de adicionar */}
-        {mostrarStatus ? (
           <StatusBadge status={livro?.status} />
-        ) : (
-          <button 
-            className="add-btn"
-            onClick={handleAddToLibrary}
-            disabled={isAdding || localBibliotecaId}
-          >
-            {localBibliotecaId ? 'Na Biblioteca' : (isAdding ? 'Adicionando...' : 'Adicionar ao Perfil')}
-          </button>
-        )}
       </div>
     </div>
   );

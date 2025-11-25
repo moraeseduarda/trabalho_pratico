@@ -132,7 +132,13 @@ function StatusBookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = f
   return (
     <div className="book-card">
       <div className="book-image">
-        <button className="favorite-btn">♡</button>
+        <button 
+          className={`favorite-btn ${isFavorite ? 'active' : ''}`}
+          onClick={toggleFavorite}
+          title={localBibliotecaId ? (isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos') : 'Adicione à biblioteca primeiro'}
+        >
+          {isFavorite ? '♥' : '♡'}
+        </button>
         {livro?.imageLinks?.thumbnail && (
           <img 
             src={livro.imageLinks.thumbnail} 

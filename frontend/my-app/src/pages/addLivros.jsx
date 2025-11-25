@@ -106,7 +106,6 @@ function AddLivros() {
                 statusInicial={livroNaBiblioteca?.status}
                 onLivroAdicionado={handleLivroAdicionado}
                 onFavoritoChange={handleFavoritoChange}
-                mostrarStatus={false}
               />
             );
           })}
