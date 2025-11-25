@@ -12,11 +12,6 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
-const origensPermitidas = [
-    'https://trabalho-pratico-z409.onrender.com', // frontend
-    'http://localhost:5173' // desenvolvimento
-]
-
 // Middlewares
 
 // Lê os cookies enviados pelo navegador
@@ -24,9 +19,23 @@ app.use(cookieParser());
 
 // Permite requisições do frontend
 app.use(cors({
-    origin: origensPermitidas,
+    origin: function (origin, callback) {
+        if (!origin) return callback(null, true); // permitir ferramentas como Postman
+
+        const allowed = [
+            'https://trabalho-pratico-z409.onrender.com',
+            'http://localhost:5173'
+        ];
+
+        if (allowed.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS: " + origin));
+        }
+    },
     credentials: true
 }));
+
 
 // Permite json
 app.use(express.json());
