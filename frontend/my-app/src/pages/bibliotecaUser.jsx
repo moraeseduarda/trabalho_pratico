@@ -36,15 +36,14 @@ function BibliotecaUser() {
             .map((item) => {
               if (!item) return null;
 
-              // CORREÇÃO: Passa TODOS os campos que vêm do backend
-              // O BookCard vai saber como ler cada um
               return {
                 id: item._id,
                 titulo: item.titulo,
-                autores: item.autores,     // Array de autores
-                capa: item.capa,           // Pode não existir
-                imagemCapa: item.imagemCapa, // Pode não existir
+                autores: item.autores,
+                capa: item.capa,
+                imagemCapa: item.imagemCapa,
                 googleBookId: item.googleBookId,
+                status: item.status, 
               };
             })
             .filter(Boolean)
@@ -72,7 +71,13 @@ function BibliotecaUser() {
       {!carregando && !erro && (
         <div className="books-grid">
           {livros.length > 0 ? (
-            livros.map((livro) => <BookCard key={livro.id} livro={livro} />)
+            livros.map((livro) => (
+              <BookCard 
+                key={livro.id} 
+                livro={livro} 
+                mostrarStatus={true}  // Mostra o StatusBadge
+              />
+            ))
           ) : (
             <p className="empty-msg">Nada para ver aqui.</p>
           )}

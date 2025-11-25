@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
+import StatusBadge from '../StatusBadge/StatusBadge';
 
-function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, onLivroAdicionado, onFavoritoChange }) {
-
-
+function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, onLivroAdicionado, onFavoritoChange, mostrarStatus = false }) {
   const [isFavorite, setIsFavorite] = useState(favoritoInicial);
   const [isAdding, setIsAdding] = useState(false);
   const [localBibliotecaId, setLocalBibliotecaId] = useState(bibliotecaId);
@@ -17,10 +16,9 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
     setLocalBibliotecaId(bibliotecaId);
   }, [favoritoInicial, bibliotecaId]);
 
-  // --- CORREÇÃO: Pega os dados verificando TODOS os nomes possíveis ---
-  const titulo = livro?.titulo || livro?.title || 'Título não disponível';
+  // --- LÓGICA DE EXIBIÇÃO ---
+  const titulo = livro?.title || livro?.titulo || 'Título não disponível';
   
-  // Autor pode vir como: autores (array), autor (string), ou authors (array do Google)
   let autor = 'Autor desconhecido';
   if (livro?.autores && Array.isArray(livro.autores)) {
     autor = livro.autores.join(', ');
@@ -30,9 +28,7 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
     autor = livro.autor;
   }
   
-  // Imagem pode vir como: capa, imagemCapa, ou imageLinks.thumbnail
   const imagem = livro?.capa || livro?.imagemCapa || livro?.imageLinks?.thumbnail || '';
-  // --------------------------------------------------------------------
 
   const handleAddToLibrary = async () => {
     setIsAdding(true);
@@ -49,7 +45,7 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
           autores: livro.authors,
           capa: livro.imageLinks?.thumbnail,
           descricao: livro.description,
-          status: 'lido'
+          status: 'quero_ler'
         })
       });
 
@@ -88,9 +84,7 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
           'Content-Type': 'application/json',
         },
         credentials: 'include',
-        body: JSON.stringify({ 
-          favorito: novoFavorito
-        })
+        body: JSON.stringify({ favorito: novoFavorito })
       });
 
       if (!response.ok) {
@@ -145,13 +139,18 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
         <h3>{titulo}</h3>
         <p className="author">{autor}</p>
         
-        <button 
-          className="add-btn"
-          onClick={handleAddToLibrary}
-          disabled={isAdding || localBibliotecaId}
-        >
-          {localBibliotecaId ? 'Na Biblioteca' : (isAdding ? 'Adicionando...' : 'Adicionar ao Perfil')}
-        </button>
+        {/* Mostra status OU botão de adicionar */}
+        {mostrarStatus ? (
+          <StatusBadge status={livro?.status} />
+        ) : (
+          <button 
+            className="add-btn"
+            onClick={handleAddToLibrary}
+            disabled={isAdding || localBibliotecaId}
+          >
+            {localBibliotecaId ? 'Na Biblioteca' : (isAdding ? 'Adicionando...' : 'Adicionar ao Perfil')}
+          </button>
+        )}
       </div>
     </div>
   );
