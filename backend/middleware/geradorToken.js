@@ -20,8 +20,6 @@ const geradorToken = (res, userId) => {
         );
 
 
-    const isProduction = process.env.NODE_ENV === "production";
-
     // cookie() é um método do express para facilitar envio de cookies no header http
     // envia o token em um cookie HTTP-only
     
@@ -31,7 +29,7 @@ const geradorToken = (res, userId) => {
         
         // Flag que exige HTTPS, para aplicação em produção
         // Essa flag protege informações no cookie, instrui o9 navefador a nunca enviar o cookie de volta ao servidor se a conezão for HTTP (ambiente desenvolvimento )
-        secure: isProduction,
+        secure: true,
         
         sameSite: "none",
         maxAge: 24 * 60 * 60 * 1000, // 1 dias em milissegundos

@@ -187,12 +187,10 @@ const pegaUserAtual = async (req, res) => {
 };
 
 const logoutUser = (_req, res) => {
-    const isProduction = process.env.NODE_ENV === "production";
-
     // Limpa o cookie com as mesmas flags usadas na criação
     res.clearCookie('jwt', {
         httpOnly: true,
-        secure: isProduction,
+        secure: true,
         sameSite: "none",
         path: '/'
     });
