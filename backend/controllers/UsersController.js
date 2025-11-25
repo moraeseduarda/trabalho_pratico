@@ -96,10 +96,12 @@ const updateUserProfile = async (req, res) => {
             generosFavoritos, 
             idiomaPreferencia, 
             metaAnual,
-            fotoPerfil
+            fotoPerfil,
+            senhaAtual,
+            novaSenha
         } = req.body;
 
-        const user = await User.findById(req.userId);
+        const user = await User.findById(req.userId).select('+password');
 
         if (!user) {
             return res.status(404).json({ message: 'Usuário não encontrado' });
@@ -112,6 +114,27 @@ const updateUserProfile = async (req, res) => {
             }
         }
 
+        // Lógica para alterar senha
+        if (novaSenha) {
+            if (!senhaAtual) {
+                return res.status(400).json({ message: 'Senha atual é obrigatória para alterar a senha' });
+            }
+
+            // Verifica se a senha atual está correta
+            const senhaCorreta = await user.matchPassword(senhaAtual);
+            if (!senhaCorreta) {
+                return res.status(400).json({ message: 'Senha atual incorreta' });
+            }
+
+            // Valida nova senha
+            if (novaSenha.length < 6) {
+                return res.status(400).json({ message: 'Nova senha deve ter no mínimo 6 caracteres' });
+            }
+
+            user.password = novaSenha; // O pre-save hook vai criptografar
+        }
+
+        // Atualizar outros campos
         if (nome) user.nome = nome;
         if (email) user.email = email;
         if (dataNascimento) user.dataNascimento = dataNascimento;
@@ -124,7 +147,7 @@ const updateUserProfile = async (req, res) => {
         await user.save();
 
         res.json({
-            message: 'Perfil atualizado com sucesso',
+            message: novaSenha ? 'Perfil e senha atualizados com sucesso' : 'Perfil atualizado com sucesso',
             user: {
                 _id: user._id,
                 nome: user.nome,

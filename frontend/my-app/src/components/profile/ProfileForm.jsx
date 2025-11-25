@@ -1,25 +1,32 @@
 import { useEffect, useState } from "react";
-import { Eye, EyeOff, Link2 } from "lucide-react";
+import { Link2, Eye, EyeOff } from "lucide-react";
 import styles from "../../styles/profile_form.module.css";
 
 export default function ProfileForm({ userData, onUpdate }) {
   const [nome, setNome] = useState(userData?.nome || "");
-  const [fotoPerfil, setFotoPerfil] = useState(userData?.fotoPerfil || "");
   const [dataNascimento, setDataNascimento] = useState("");
   const [email, setEmail] = useState(userData?.email || "");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
+  const [fotoPerfil, setFotoPerfil] = useState(userData?.fotoPerfil || "");
   const [sobre, setSobre] = useState("");
   const [generosFavoritos, setGenerosFavoritos] = useState("");
   const [idiomaPreferencia, setIdiomaPreferencia] = useState("");
   const [metaAnual, setMetaAnual] = useState("");
+  
+  // Estados para senha
+  const [senhaAtual, setSenhaAtual] = useState("");
+  const [novaSenha, setNovaSenha] = useState("");
+  const [confirmarSenha, setConfirmarSenha] = useState("");
+  const [mostrarSenhaAtual, setMostrarSenhaAtual] = useState(false);
+  const [mostrarNovaSenha, setMostrarNovaSenha] = useState(false);
+  const [mostrarConfirmarSenha, setMostrarConfirmarSenha] = useState(false);
+  
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     if (userData) {
       setNome(userData.nome || "");
-      setFotoPerfil(userData.fotoPerfil || "");
       setEmail(userData.email || "");
+      setFotoPerfil(userData.fotoPerfil || "");
       setDataNascimento(
         userData.dataNascimento
           ? new Date(userData.dataNascimento).toISOString().split("T")[0]
@@ -36,18 +43,47 @@ export default function ProfileForm({ userData, onUpdate }) {
     e.preventDefault();
     setMessage("");
 
+    // Validação de senha
+    if (novaSenha || senhaAtual || confirmarSenha) {
+      if (!senhaAtual) {
+        setMessage("Senha atual é obrigatória para alterar a senha");
+        setTimeout(() => setMessage(""), 3000);
+        return;
+      }
+      if (novaSenha !== confirmarSenha) {
+        setMessage("Nova senha e confirmação não coincidem");
+        setTimeout(() => setMessage(""), 3000);
+        return;
+      }
+      if (novaSenha.length < 6) {
+        setMessage("Nova senha deve ter no mínimo 6 caracteres");
+        setTimeout(() => setMessage(""), 3000);
+        return;
+      }
+    }
+
     const result = await onUpdate({
       nome,
-      fotoPerfil,
       email,
+      fotoPerfil,
       dataNascimento,
       sobre,
       generosFavoritos,
       idiomaPreferencia,
-      metaAnual: parseInt(metaAnual)
+      metaAnual: parseInt(metaAnual),
+      senhaAtual: senhaAtual || undefined,
+      novaSenha: novaSenha || undefined
     });
 
     setMessage(result.message);
+    
+    // Limpa campos de senha após sucesso
+    if (result.message.includes('sucesso')) {
+      setSenhaAtual("");
+      setNovaSenha("");
+      setConfirmarSenha("");
+    }
+    
     setTimeout(() => setMessage(""), 3000);
   };
 
@@ -55,13 +91,18 @@ export default function ProfileForm({ userData, onUpdate }) {
     // Resetar para valores originais
     if (userData) {
       setNome(userData.nome || "");
-      setFotoPerfil(userData.fotoPerfil || "");
       setEmail(userData.email || "");
+      setFotoPerfil(userData.fotoPerfil || "");
       setDataNascimento(userData.dataNascimento ? userData.dataNascimento.split('T')[0] : "");
       setSobre(userData.sobre || "");
       setGenerosFavoritos(userData.generosFavoritos?.[0] || "");
       setIdiomaPreferencia(userData.idiomaPreferencia || "");
       setMetaAnual(userData.metaAnual?.toString() || "");
+      
+      // Limpa senhas
+      setSenhaAtual("");
+      setNovaSenha("");
+      setConfirmarSenha("");
     }
     setMessage("Alterações canceladas");
     setTimeout(() => setMessage(""), 3000);
@@ -97,12 +138,11 @@ export default function ProfileForm({ userData, onUpdate }) {
             </div>
             
             <div className={styles.inputGroup}>
-              <Link2 size={20} className={styles.linkIcon} />
               <input
-                type="text"
-                placeholder="URL da Foto de Perfil"
-                value={fotoPerfil}
-                onChange={(e) => setFotoPerfil(e.target.value)}
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className={styles.input}
               />
             </div>
@@ -112,7 +152,7 @@ export default function ProfileForm({ userData, onUpdate }) {
             <div className={styles.inputGroup}>
               <input
                 type="date"
-                placeholder="04 / 08 / 1993"
+                placeholder="Data de Nascimento"
                 value={dataNascimento}
                 onChange={(e) => setDataNascimento(e.target.value)}
                 className={styles.input}
@@ -120,30 +160,83 @@ export default function ProfileForm({ userData, onUpdate }) {
             </div>
             
             <div className={styles.inputGroup}>
-              <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className={styles.input}
-              />
+              <div className={styles.urlWrapper}>
+                <Link2 size={20} className={styles.linkIcon} />
+                <input
+                  type="url"
+                  placeholder="URL da Foto de Perfil (ex: https://...)"
+                  value={fotoPerfil}
+                  onChange={(e) => setFotoPerfil(e.target.value)}
+                  className={styles.input}
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ADICIONE: Seção de Segurança */}
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Segurança</h2>
+          <p className={styles.sectionSubtitle}>
+            Deixe em branco se não quiser alterar a senha
+          </p>
+          
+          <div className={styles.formRow}>
+            <div className={styles.inputGroup}>
+              <div className={styles.passwordWrapper}>
+                <input
+                  type={mostrarSenhaAtual ? "text" : "password"}
+                  placeholder="Senha Atual"
+                  value={senhaAtual}
+                  onChange={(e) => setSenhaAtual(e.target.value)}
+                  className={styles.input}
+                />
+                <button
+                  type="button"
+                  onClick={() => setMostrarSenhaAtual(!mostrarSenhaAtual)}
+                  className={styles.eyeButton}
+                >
+                  {mostrarSenhaAtual ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.formRow}>
+            <div className={styles.inputGroup}>
+              <div className={styles.passwordWrapper}>
+                <input
+                  type={mostrarNovaSenha ? "text" : "password"}
+                  placeholder="Nova Senha"
+                  value={novaSenha}
+                  onChange={(e) => setNovaSenha(e.target.value)}
+                  className={styles.input}
+                />
+                <button
+                  type="button"
+                  onClick={() => setMostrarNovaSenha(!mostrarNovaSenha)}
+                  className={styles.eyeButton}
+                >
+                  {mostrarNovaSenha ? <EyeOff size={20} /> : <Eye size={20} />}
+                </button>
+              </div>
             </div>
             
             <div className={styles.inputGroup}>
               <div className={styles.passwordWrapper}>
                 <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  type={mostrarConfirmarSenha ? "text" : "password"}
+                  placeholder="Confirmar Nova Senha"
+                  value={confirmarSenha}
+                  onChange={(e) => setConfirmarSenha(e.target.value)}
                   className={styles.input}
                 />
                 <button
                   type="button"
-                  onClick={() => setShowPassword(!showPassword)}
+                  onClick={() => setMostrarConfirmarSenha(!mostrarConfirmarSenha)}
                   className={styles.eyeButton}
                 >
-                  {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {mostrarConfirmarSenha ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
             </div>
