@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import BookCard from '../components/bookcard/BookCard';
+import StatusBookCard from '../components/bookcard/StatusBookCard';
 import '../styles/addlivros.css';
 
 function AddLivros() {
@@ -97,12 +97,13 @@ function AddLivros() {
             const livroNaBiblioteca = encontrarNaBiblioteca(item.id);
             
             return (
-              <BookCard 
+              <StatusBookCard 
                 key={item.id} 
                 livro={item.volumeInfo}
                 googleBookId={item.id}
                 bibliotecaId={livroNaBiblioteca?._id}
                 favoritoInicial={livroNaBiblioteca?.favorito || false}
+                statusInicial={livroNaBiblioteca?.status}
                 onLivroAdicionado={handleLivroAdicionado}
                 onFavoritoChange={handleFavoritoChange}
                 mostrarStatus={false}
