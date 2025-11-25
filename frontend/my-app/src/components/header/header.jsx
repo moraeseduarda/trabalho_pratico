@@ -12,7 +12,7 @@ export default function Header({setIsAuthenticated}) {
   const navLinks = [
     { href: "/", text: "Home" },
     { href: "/meu-perfil", text: "Meu perfil" },
-    { href: "/explorar", text: "Explorar" },
+    { href: "/explorar", text: "Minha Biblioteca" },
     { href: "/comunidades", text: "Comunidades" },
     { href: "/livros", text: "Adicionar livros" },
   ];
