@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Link2 } from "lucide-react";
 import styles from "../../styles/profile_form.module.css";
 
 export default function ProfileForm({ userData, onUpdate }) {
   const [nome, setNome] = useState(userData?.nome || "");
-  const [username, setUsername] = useState(userData?.username || "");
+  const [fotoPerfil, setFotoPerfil] = useState(userData?.fotoPerfil || "");
   const [dataNascimento, setDataNascimento] = useState("");
   const [email, setEmail] = useState(userData?.email || "");
   const [password, setPassword] = useState("");
@@ -18,7 +18,7 @@ export default function ProfileForm({ userData, onUpdate }) {
   useEffect(() => {
     if (userData) {
       setNome(userData.nome || "");
-      setUsername(userData.username || "");
+      setFotoPerfil(userData.fotoPerfil || "");
       setEmail(userData.email || "");
       setDataNascimento(
         userData.dataNascimento
@@ -38,7 +38,7 @@ export default function ProfileForm({ userData, onUpdate }) {
 
     const result = await onUpdate({
       nome,
-      username,
+      fotoPerfil,
       email,
       dataNascimento,
       sobre,
@@ -55,7 +55,7 @@ export default function ProfileForm({ userData, onUpdate }) {
     // Resetar para valores originais
     if (userData) {
       setNome(userData.nome || "");
-      setUsername(userData.username || "");
+      setFotoPerfil(userData.fotoPerfil || "");
       setEmail(userData.email || "");
       setDataNascimento(userData.dataNascimento ? userData.dataNascimento.split('T')[0] : "");
       setSobre(userData.sobre || "");
@@ -97,11 +97,12 @@ export default function ProfileForm({ userData, onUpdate }) {
             </div>
             
             <div className={styles.inputGroup}>
+              <Link2 size={20} className={styles.linkIcon} />
               <input
                 type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder="URL da Foto de Perfil"
+                value={fotoPerfil}
+                onChange={(e) => setFotoPerfil(e.target.value)}
                 className={styles.input}
               />
             </div>

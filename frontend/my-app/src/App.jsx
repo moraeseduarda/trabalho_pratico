@@ -1,5 +1,5 @@
-import { BrowserRouter as Router, Route, Routes, Navigate } from "react-router-dom";
-import './App.css'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import './App.css' 
 import Login from './pages/signin'
 import SignUp from './pages/signup'
 import Home from './pages/Home'
@@ -19,45 +19,103 @@ function App() {
   const HeaderPadrao = <Header setIsAuthenticated={setIsAuthenticated} />;
 
   return (
-    <Router>
+    //Usando Router para lidar com os redirecionamentos de página
+    <BrowserRouter>
       <Routes>
-        {/* Rotas públicas */}
-        <Route path="/signin" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
+        {/* Rotas sem header */}
+        <Route path="/signin" element={<Login setIsAuthenticated={setIsAuthenticated}  />} />
         <Route path="/signup" element={<SignUp />} />
 
-        {/* Rotas protegidas */}
-        <Route
-          path="/"
-          element={isAuthenticated ? <><Header setIsAuthenticated={setIsAuthenticated} /><Home /></> : <Navigate to="/signin" />}
-        />
-        <Route
-          path="/comunidades"
-          element={isAuthenticated ? <><Header setIsAuthenticated={setIsAuthenticated} /><Comunidades /></> : <Navigate to="/signin" />}
-        />
-        <Route
-          path="/comunidade/:id"
-          element={isAuthenticated ? <><Header setIsAuthenticated={setIsAuthenticated} /><TelaComunidade /></> : <Navigate to="/signin" />}
-        />
-        {/* ADICIONE ESTA ROTA */}
-        <Route
-          path="/comunidade/:id/gerenciar"
-          element={isAuthenticated ? <><Header setIsAuthenticated={setIsAuthenticated} /><GerenciarComunidade /></> : <Navigate to="/signin" />}
-        />
-        <Route
-          path="/comunidade/:id/post/:postId"
-          element={isAuthenticated ? <><Header setIsAuthenticated={setIsAuthenticated} /><PostComunidade /></> : <Navigate to="/signin" />}
-        />
-        <Route
-          path="/meu-perfil"
-          element={isAuthenticated ? <><Header setIsAuthenticated={setIsAuthenticated} /><Profile setIsAuthenticated={setIsAuthenticated} /></> : <Navigate to="/signin" />}
-        />
-        <Route
-          path="/livros"
-          element={isAuthenticated ? <><Header setIsAuthenticated={setIsAuthenticated} /><AddLivros /></> : <Navigate to="/signin" />}
-        />
+        {/* Rotas com header */}
+
+          {/* Se está autenticado vai para Home, senão vai para tela login */} 
+          <Route path="/" element={
+            <RotaProtegida>
+                <>
+                    {HeaderPadrao}
+                    <Home />
+                </>
+            </RotaProtegida>
+        } />
+
+          
+          {/* Rota para meu perfil */}
+          <Route path="/meu-perfil" element={
+            <RotaProtegida>
+                <>
+                    {HeaderPadrao}
+                    <Profile />
+                </>
+            </RotaProtegida>
+        } />
+
+        {/* Rota para página comunidade */}
+        <Route path="/comunidades" element={
+            <RotaProtegida>
+              <>
+                  {HeaderPadrao}
+                  <Comunidades />
+              </>
+            </RotaProtegida>
+        } />
+
+        {/* Rota para página individual da comunidade, id é o número de identificação da comunidade */}
+        <Route path="/comunidade/:id" element={
+            <RotaProtegida>
+              <>
+                {HeaderPadrao}
+                <TelaComunidade />
+              </>
+            </RotaProtegida>
+        } />
+
+        {/* Rota para gerenciar comunidade */}
+        <Route path="/comunidade/:id/gerenciar" element={
+            <RotaProtegida>
+              <>
+                {HeaderPadrao}
+                <GerenciarComunidade />
+              </>
+            </RotaProtegida>
+        } />
+
+        {/* Rota para post individual de uma comunidade*/}
+        <Route path="/comunidade/:id/post/:postId" element={
+          <RotaProtegida>
+            <>
+              {HeaderPadrao}
+              <PostComunidade />
+            </>
+          </RotaProtegida>
+        } />
+
+
+        {/* Rota para adicionar livros*/}
+        <Route path="/livros" element={
+          <RotaProtegida>
+            <>
+              {HeaderPadrao}
+              <AddLivros />
+            </>
+          </RotaProtegida>
+        } />
+
+        {/* Biblioteca do Usuário */}
+        <Route path="/explorar" element={
+          <RotaProtegida>
+            <>
+              {HeaderPadrao}
+              <BibliotecaUser />
+            </>
+          </RotaProtegida>
+        } />
+
+        {/* Rota fallback caso nenhum path bata */}
+        <Route path="*" element={<Navigate to="/" />} />
+
       </Routes>
-    </Router>
-  )
+    </BrowserRouter>
+  );
 }
 
 export default App;

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import styles from '../../styles/profile_sidebar.module.css'
-import profileImage from '../../assets/images/cebolinha-pfp.jpg';
+import Avatar from '../profile/Avatar';
 
 export default function ProfileSidebar({ userData, biblioteca = [] }) {
     // Calcular estatísticas
@@ -15,13 +15,16 @@ export default function ProfileSidebar({ userData, biblioteca = [] }) {
             favoritos: favoritos
         };
     }, [biblioteca]);
+
     return (
         <div className={styles.sidebar}>
             <div className={styles.avatarContainer}>
-                <div className={styles.image}>
-                    <img src={profileImage} alt="Foto de perfil" />
-                </div>
-                <h2 className={styles.username}>{userData?.nome || "Cebolinha"}</h2>
+                <Avatar 
+                    nome={userData?.nome || "Usuário"}
+                    fotoPerfil={userData?.fotoPerfil}
+                    size="large"
+                />
+                <h2 className={styles.username}>{userData?.nome || "Usuário"}</h2>
             </div>
 
             <div className={styles.stats}>

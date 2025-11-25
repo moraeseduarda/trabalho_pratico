@@ -44,20 +44,22 @@
 }
 
 .inputGroup {
-  display: flex;
-  flex-direction: column;
+  position: relative;
+  flex: 1;
+  min-width: 200px;
 }
 
 .input,
 .select,
 .textarea {
-  padding: 0.875rem 1rem;
-  border: 2px solid #d9d9d9;
-  border-radius: 8px;
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
   font-size: 1rem;
-  font-family: inherit;
+  font-family: 'Outfit', sans-serif;
+  transition: all 0.2s;
   background-color: white;
-  transition: border-color 0.3s;
 }
 
 .input:focus,
@@ -162,6 +164,26 @@
   color: #155724;
   border: 1px solid #c3e6cb;
   font-weight: 500;
+}
+
+.urlWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.linkIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.inputGroup:has(.linkIcon) .input {
+  padding-left: 3rem;
 }
 
 @media (max-width: 768px) {
