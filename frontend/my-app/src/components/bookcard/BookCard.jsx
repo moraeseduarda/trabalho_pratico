@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import styles from "../../styles/profile_form.module.css";
 
-function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, onLivroAdicionado, onFavoritoChange }) {
+function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, statusInicial = '', onLivroAdicionado, onFavoritoChange }) {
   const [isFavorite, setIsFavorite] = useState(favoritoInicial);
   const [isAdding, setIsAdding] = useState(false);
   const [localBibliotecaId, setLocalBibliotecaId] = useState(bibliotecaId);
+  const [statusAtual, setStatusAtual] = useState(false);
 
   const URL_BACKEND = 
     import.meta.env.MODE === "development"
@@ -14,41 +16,73 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
   useEffect(() => {
     setIsFavorite(favoritoInicial);
     setLocalBibliotecaId(bibliotecaId);
-  }, [favoritoInicial, bibliotecaId]);
+    if (statusInicial) setStatusAtual(statusInicial)
+  }, [favoritoInicial, bibliotecaId, statusInicial]);
 
-  const handleAddToLibrary = async () => {
+  const handleAddToLibrary = async (novoStatus) => {
+    if (!novoStatus) return;
+
     setIsAdding(true);
-    try {
-      const response = await fetch(`${URL_BACKEND}/api/users/biblioteca`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ 
-          googleBookId,
-          titulo: livro.title,
-          autores: livro.authors,
-          capa: livro.imageLinks?.thumbnail,
-          descricao: livro.description,
-          status: 'lido'
-        })
-      });
+    
+    // Backup para reverter em caso de erro
+    const statusAnterior = statusAtual;
+    
+    setStatusAtual(novoStatus);
 
-      if (response.ok) {
-        const data = await response.json();
-        alert('Livro adicionado à biblioteca!');
-        setLocalBibliotecaId(data._id);
-        if (onLivroAdicionado) {
-          onLivroAdicionado(data);
-        }
+    const nomesAmigaveis = {
+      quero_ler: "Quero Ler",
+      lendo: "Lendo",
+      lido: "Lido"
+    };
+
+    try {
+      if (localBibliotecaId) {
+        // Já está na biblioteca - atualiza
+        const response = await fetch(`${URL_BACKEND}/api/users/biblioteca/${localBibliotecaId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ status: novoStatus }) // Atualiza só o status
+        });
+
+        if (!response.ok) throw new Error('Erro ao atualizar status');
+        
+        alert(`Status modificado para: ${nomesAmigaveis[novoStatus]}`);
+
       } else {
-        const errorData = await response.json();
-        alert(errorData.message || 'Erro ao adicionar livro.');
+        // ão está na biblioteca: adiciona
+        const response = await fetch(`${URL_BACKEND}/api/users/biblioteca`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          credentials: 'include',
+          body: JSON.stringify({ 
+            googleBookId,
+            titulo: livro.title,
+            autores: livro.authors,
+            capa: livro.imageLinks?.thumbnail,
+            descricao: livro.description,
+            status: novoStatus // Usa o status escolhido no select
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setLocalBibliotecaId(data._id); // Salva o ID retornado
+          
+          alert(`Livro adicionado à biblioteca como: ${nomesAmigaveis[novoStatus]}`);
+
+          if (onLivroAdicionado) onLivroAdicionado(data);
+        } else {
+          const errorData = await response.json();
+          alert(errorData.message || 'Erro ao adicionar livro.');
+          setStatusAtual(statusAnterior); // Reverte visualmente
+          setLocalBibliotecaId(null);
+        }
       }
     } catch (error) {
       console.error('Erro:', error);
-      alert('Erro ao adicionar livro.');
+      alert('Erro de conexão.');
+      setStatusAtual(statusAnterior); // Reverte visualmente
     } finally {
       setIsAdding(false);
     }
@@ -119,14 +153,21 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
       <div className="book-info">
         <h3>{livro?.title || 'Título não disponível'}</h3>
         <p className="author">{livro?.authors?.join(', ') || 'Autor desconhecido'}</p>
-        
-        <button 
-          className="add-btn"
-          onClick={handleAddToLibrary}
-          disabled={isAdding || localBibliotecaId} // Desabilita se já está na biblioteca
+
+        <select
+          value={statusAtual || ""}
+          onChange={(e) => handleAddToLibrary(e.target.value)}
+          className={styles.select}
+          disabled={isAdding}
         >
-          {localBibliotecaId ? 'Na Biblioteca' : (isAdding ? 'Adicionando...' : 'Adicionar ao Perfil')}
-        </button>
+          <option value="" disabled>
+            {localBibliotecaId ? 'Alterar Status' : 'Adicionar à Biblioteca'}
+          </option>
+
+          <option value="quero_ler">Quero Ler</option>
+          <option value="lendo">Lendo</option>
+          <option value="lido">Lido</option>
+        </select>
       </div>
     </div>
   );
