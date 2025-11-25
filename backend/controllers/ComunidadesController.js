@@ -16,7 +16,11 @@ const listaComunidades = async (req, res) => {
 const getComunidadePorId = async (req, res) => {
     const comunidadeId = req.params.id;
     try {
-        const comunidade = await Comunidade.findById(comunidadeId).populate('membros');
+        const comunidade = await Comunidade.findById(comunidadeId)
+            .populate('membros', 'nome email')
+            .populate('admin', 'nome email')
+            .populate('solicitacoesPendentes', 'nome email');
+
         if (!comunidade) return res.status(404).json({ message: 'Comunidade não encontrada' });
         return res.json(comunidade);
     } catch (error) {
@@ -24,6 +28,41 @@ const getComunidadePorId = async (req, res) => {
         return res.status(500).json({ message: 'Erro ao buscar comunidade' });
     }
 };
+
+// Cria uma nova comunidade
+const criarComunidade = async (req, res) => {
+    const userId = req.userId;
+    const { nome, descricao } = req.body;
+
+    try {
+        // Verifica se já existe uma comunidade com esse nome
+        const existe = await Comunidade.findOne({ nome });
+        if (existe) {
+            return res.status(400).json({ message: 'Já existe uma comunidade com este nome' });
+        }
+
+        const novaComunidade = await Comunidade.create({
+            nome,
+            descricao,
+            admin: [userId], // Usuário que criou é o admin
+            membros: [userId] // Admin automaticamente é membro
+        });
+
+        // Adiciona a comunidade ao array de comunidades do usuário
+        await User.findByIdAndUpdate(userId, {
+            $addToSet: { comunidades: novaComunidade._id }
+        });
+
+        const populated = await Comunidade.findById(novaComunidade._id)
+            .populate('admin', 'nome email')
+            .populate('membros', 'nome email');
+
+        return res.status(201).json(populated);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Erro ao criar comunidade' });
+    }
+}
 
 // Lista posts de uma comunidade
 const listaPostsDaComunidade = async (req, res) => {
@@ -78,8 +117,8 @@ const criarPostNaComunidade = async (req, res) => {
     }
 };
 
-// Usuário entra em uma comunidade (colocar middleware deve setar req.userId?)
-const entrarComunidade = async (req, res) => {
+// Usuário solicita entrada em uma comunidade (colocar middleware deve setar req.userId?)
+const solicitarEntrada = async (req, res) => {
     const userId = req.userId;
     const comunidadeId = req.params.id;
 
@@ -89,21 +128,108 @@ const entrarComunidade = async (req, res) => {
             return res.status(404).json({ message: 'Comunidade não encontrada' });
         }
 
-        // Adiciona usuário aos membros da comunidade (sem duplicatas)
+        // Verifica se já é membro
+        if (comunidade.membros.includes(userId)) {
+            return res.status(400).json({ message: 'Você já é membro desta comunidade' });
+        }
+
+        // Verifica se já solicitou entrada
+        if (comunidade.solicitacoesPendentes.includes(userId)) {
+            return res.status(400).json({ message: 'Solicitação já enviada' });
+        }
+
+        // Adiciona à lista de solicitações pendentes
         await Comunidade.findByIdAndUpdate(comunidadeId, {
-            $addToSet: { membros: userId }
+            $addToSet: { solicitacoesPendentes: userId }
         });
 
-        // Adiciona comunidade ao array de comunidades do usuário
-        await User.findByIdAndUpdate(userId, {
-            $addToSet: { comunidades: comunidadeId }
-        });
-
-        return res.status(200).json({ message: 'Entrou na comunidade com sucesso' });
+        return res.status(200).json({ message: 'Solicitação enviada! Aguarde aprovação do admin.' });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: 'Erro ao entrar na comunidade' });
+        return res.status(500).json({ message: 'Erro ao solicitar entrada' });
     }
 };
 
-export { listaComunidades, getComunidadePorId, entrarComunidade, listaPostsDaComunidade, getPostPorId, criarPostNaComunidade };
+// Aprovar solicitação (só admin pode)
+const aprovarSolicitacao = async (req, res) => {
+    const adminId = req.userId;
+    const { comunidadeId, usuarioId } = req.params;
+
+    try {
+        const comunidade = await Comunidade.findById(comunidadeId);
+        if (!comunidade) {
+            return res.status(404).json({ message: 'Comunidade não encontrada' });
+        }
+
+        // Verifica se o usuário é admin
+        if (!comunidade.admin.includes(adminId)) {
+            return res.status(403).json({ message: 'Apenas admins podem aprovar solicitações' });
+        }
+
+        // Verifica se a solicitação existe
+        if (!comunidade.solicitacoesPendentes.includes(usuarioId)) {
+            return res.status(400).json({ message: 'Solicitação não encontrada' });
+        }
+
+        // Remove da lista de solicitações pendentes e adiciona aos membros
+        await Comunidade.findByIdAndUpdate(comunidadeId, {
+            $pull: { solicitacoesPendentes: usuarioId },
+            $addToSet: { membros: usuarioId }
+        });
+
+        // Adiciona comunidade ao array do usuário
+        await User.findByIdAndUpdate(usuarioId, {
+            $addToSet: { comunidades: comunidadeId }
+        });
+
+        return res.status(200).json({ message: 'Solicitação aprovada com sucesso!' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Erro ao aprovar solicitação' });
+    }
+};
+
+// Rejeitar solicitação (só admin pode)
+const rejeitarSolicitacao = async (req, res) => {
+    const adminId = req.userId;
+    const { comunidadeId, usuarioId } = req.params;
+
+    try {
+        const comunidade = await Comunidade.findById(comunidadeId);
+        if (!comunidade) {
+            return res.status(404).json({ message: 'Comunidade não encontrada' });
+        }
+
+        // Verifica se o usuário é admin
+        if (!comunidade.admin.includes(adminId)) {
+            return res.status(403).json({ message: 'Apenas admins podem rejeitar solicitações' });
+        }
+
+        //Verifica se a solicitação existe
+        if (!comunidade.solicitacoesPendentes.includes(usuarioId)) {
+            return res.status(400).json({ message: 'Nenhuma solicitação pendente deste usuário' });
+        }
+
+        // Remove da lista de solicitações pendentes
+        await Comunidade.findByIdAndUpdate(comunidadeId, {
+            $pull: { solicitacoesPendentes: usuarioId }
+        });
+
+        return res.status(200).json({ message: 'Solicitação rejeitada' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Erro ao rejeitar solicitação' });
+    }
+}
+
+export {
+    listaComunidades,
+    getComunidadePorId,
+    criarComunidade,
+    solicitarEntrada,
+    aprovarSolicitacao,
+    rejeitarSolicitacao,
+    listaPostsDaComunidade,
+    getPostPorId,
+    criarPostNaComunidade
+};

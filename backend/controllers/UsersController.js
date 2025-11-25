@@ -71,14 +71,18 @@ const authUser = async (req, res) => {
 
 const getUserProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.userId).select('-password');
-
+        const user = await User.findById(req.userId)
+            .select('-password')
+            .populate('comunidades');
+        
         if (!user) {
-            return res.status(404).json({ message: 'Usuário não encontrado.' });
+            return res.status(404).json({ message: 'Usuário não encontrado' });
         }
+
         res.json(user);
     } catch (error) {
-        res.status(500).json({ message: 'Erro ao buscar perfil.', error: error.message });
+        console.error('Erro ao buscar perfil:', error);
+        res.status(500).json({ message: 'Erro ao buscar perfil' });
     }
 };
 

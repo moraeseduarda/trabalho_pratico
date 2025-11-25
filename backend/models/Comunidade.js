@@ -10,12 +10,22 @@ const comunidadeSchema = new mongoose.Schema(
         descricao: {
             type: String,
             required: true,
-        }
-        ,
+        },
         membros: {
             type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
             default: []
+        },
+        admin: {
+            type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+            default: []
+        },
+        solicitacoesPendentes: {
+            type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+            default: []
         }
+    },
+    {
+        timestamps: true
     }
 );
 

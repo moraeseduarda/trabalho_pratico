@@ -64,9 +64,47 @@
   background-color: #2563eb;
 }
 
+.headerComunidades {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.botaoCriar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Outfit', sans-serif;
+}
+
+.botaoCriar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+}
+
 @media (max-width: 768px) {
   .lista {
     grid-template-columns: 1fr;
     gap: 10px; 
+  }
+
+  .headerComunidades {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .botaoCriar {
+    width: 70%;
+    justify-content: center;
   }
 }

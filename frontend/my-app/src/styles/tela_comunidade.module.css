@@ -48,6 +48,32 @@
   color: #9333ea;
 }
 
+/* Botão Gerenciar - alinhado à direita e compacto */
+.botaoGerenciar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  margin-left: auto;
+  background-color: white;
+  color: #6b7280;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Outfit', sans-serif;
+  white-space: nowrap;
+}
+
+.botaoGerenciar:hover {
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+  color: #374151;
+}
+
 .listaPosts {
   display: flex;
   flex-direction: column;
@@ -95,4 +121,12 @@
   color: #374151;
   margin-bottom: 1rem;
   line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .botaoGerenciar {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
 }

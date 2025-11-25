@@ -1,0 +1,163 @@
+.main {
+  min-height: 100vh;
+  background: #f5f5f7;
+  font-family: 'Outfit', sans-serif;
+}
+
+.header {
+  background: white;
+  padding: 24px 32px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header h1 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.botaoVoltar {
+  background: #f3f4f6;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.botaoVoltar:hover {
+  background: #e5e7eb;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px;
+}
+
+.secao {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.secao h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 20px 0;
+}
+
+.semDados {
+  text-align: center;
+  color: #9ca3af;
+  padding: 32px;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.itemSolicitacao,
+.itemMembro {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+}
+
+.nomeUsuario {
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 4px 0;
+}
+
+.emailUsuario {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.acoes {
+  display: flex;
+  gap: 8px;
+}
+
+.botaoAprovar,
+.botaoRejeitar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Outfit', sans-serif;
+}
+
+.botaoAprovar {
+  background: #10b981;
+  color: white;
+}
+
+.botaoAprovar:hover {
+  background: #059669;
+}
+
+.botaoRejeitar {
+  background: #ef4444;
+  color: white;
+}
+
+.botaoRejeitar:hover {
+  background: #dc2626;
+}
+
+.badgeAdmin {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 16px;
+  }
+
+  .itemSolicitacao,
+  .itemMembro {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .acoes {
+    width: 100%;
+  }
+
+  .botaoAprovar,
+  .botaoRejeitar {
+    flex: 1;
+  }
+}
