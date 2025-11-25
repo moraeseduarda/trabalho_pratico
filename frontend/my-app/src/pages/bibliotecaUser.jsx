@@ -28,26 +28,32 @@ function BibliotecaUser() {
       }
 
       const dados = await resposta.json();
+      
+      console.log("Dados recebidos do backend:", dados);
 
       const livrosFormatados = Array.isArray(dados)
         ? dados
             .map((item) => {
-              const livro = item.livro || item;
+              if (!item) return null;
 
-              if (!livro) return null;
-
+              // CORREÇÃO: Passa TODOS os campos que vêm do backend
+              // O BookCard vai saber como ler cada um
               return {
-                id: livro._id,
-                title: livro.titulo,
-                authors: livro.autor ? [livro.autor] : [],
-                imageLinks: { thumbnail: livro.imagemCapa },
+                id: item._id,
+                titulo: item.titulo,
+                autores: item.autores,     // Array de autores
+                capa: item.capa,           // Pode não existir
+                imagemCapa: item.imagemCapa, // Pode não existir
+                googleBookId: item.googleBookId,
               };
             })
             .filter(Boolean)
         : [];
 
+      console.log("Livros formatados:", livrosFormatados);
       setLivros(livrosFormatados);
     } catch (error) {
+      console.error("Erro:", error);
       setErro(true);
     } finally {
       setCarregando(false);

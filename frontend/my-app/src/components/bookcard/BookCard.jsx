@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 
 function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, onLivroAdicionado, onFavoritoChange }) {
+
+
   const [isFavorite, setIsFavorite] = useState(favoritoInicial);
   const [isAdding, setIsAdding] = useState(false);
   const [localBibliotecaId, setLocalBibliotecaId] = useState(bibliotecaId);
@@ -10,11 +12,27 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
       ? "http://localhost:5000"
       : "https://trabalho-pratico-fgqh.onrender.com";
 
-  // Atualiza o estado quando as props mudam
   useEffect(() => {
     setIsFavorite(favoritoInicial);
     setLocalBibliotecaId(bibliotecaId);
   }, [favoritoInicial, bibliotecaId]);
+
+  // --- CORREÇÃO: Pega os dados verificando TODOS os nomes possíveis ---
+  const titulo = livro?.titulo || livro?.title || 'Título não disponível';
+  
+  // Autor pode vir como: autores (array), autor (string), ou authors (array do Google)
+  let autor = 'Autor desconhecido';
+  if (livro?.autores && Array.isArray(livro.autores)) {
+    autor = livro.autores.join(', ');
+  } else if (livro?.authors && Array.isArray(livro.authors)) {
+    autor = livro.authors.join(', ');
+  } else if (livro?.autor) {
+    autor = livro.autor;
+  }
+  
+  // Imagem pode vir como: capa, imagemCapa, ou imageLinks.thumbnail
+  const imagem = livro?.capa || livro?.imagemCapa || livro?.imageLinks?.thumbnail || '';
+  // --------------------------------------------------------------------
 
   const handleAddToLibrary = async () => {
     setIsAdding(true);
@@ -55,14 +73,12 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
   };
 
   const toggleFavorite = async () => {
-    // Use localBibliotecaId em vez de bibliotecaId
     if (!localBibliotecaId) {
       alert('Adicione o livro à biblioteca primeiro!');
       return;
     }
 
     const novoFavorito = !isFavorite;
-    
     setIsFavorite(novoFavorito);
 
     try {
@@ -78,7 +94,6 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
       });
 
       if (!response.ok) {
-        // Se falhar, reverte o estado
         setIsFavorite(!novoFavorito);
         alert('Erro ao atualizar favorito.');
       } else {
@@ -89,7 +104,6 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
       }
     } catch (error) {
       console.error('Erro ao atualizar favorito:', error);
-      // Reverte em caso de erro
       setIsFavorite(!novoFavorito);
       alert('Erro ao atualizar favorito.');
     }
@@ -105,25 +119,36 @@ function BookCard({ livro, googleBookId, bibliotecaId, favoritoInicial = false, 
         >
           {isFavorite ? '♥' : '♡'}
         </button>
-        {livro?.imageLinks?.thumbnail ? (
+        
+        {imagem ? (
           <img 
-            src={livro.imageLinks.thumbnail} 
-            alt={livro.title}
+            src={imagem} 
+            alt={titulo}
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
         ) : (
-          <div className="no-image" style={{ color: 'white', alignSelf: 'center' }}>Sem imagem</div>
+          <div style={{ 
+            width: '100%', 
+            height: '100%', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            color: 'white',
+            fontSize: '14px'
+          }}>
+            Sem imagem
+          </div>
         )}
       </div>
 
       <div className="book-info">
-        <h3>{livro?.title || 'Título não disponível'}</h3>
-        <p className="author">{livro?.authors?.join(', ') || 'Autor desconhecido'}</p>
+        <h3>{titulo}</h3>
+        <p className="author">{autor}</p>
         
         <button 
           className="add-btn"
           onClick={handleAddToLibrary}
-          disabled={isAdding || localBibliotecaId} // Desabilita se já está na biblioteca
+          disabled={isAdding || localBibliotecaId}
         >
           {localBibliotecaId ? 'Na Biblioteca' : (isAdding ? 'Adicionando...' : 'Adicionar ao Perfil')}
         </button>
