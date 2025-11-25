@@ -2,6 +2,7 @@ import styles from '../styles/sign_in_up.module.css'
 import bookshelfImg from '../assets/images/login-page-bookshelf.png';
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import logo from '../assets/images/bookbox-logo-signin.png';
 
 function Login({setIsAuthenticated}) {
   
@@ -49,6 +50,7 @@ function Login({setIsAuthenticated}) {
     <main className={styles.page}>
       <section className={styles.card}>
         <div className={styles.formArea}>
+          <img src={logo} alt="BookBox" className={styles.logoImage} />
           <h1 className={styles.heading}>Bem-Vindo de Volta!</h1>
           <p className={styles.subheading}>
             Faça login e acesse sua biblioteca.

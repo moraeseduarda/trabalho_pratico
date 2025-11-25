@@ -25,6 +25,14 @@
   text-align: left;
 }
 
+.logoImage {
+  height: 50px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.9;
+  margin: -15px 0 0 -5px;
+}
+
 .heading {
   margin: 0;
   margin-bottom: 16px;
@@ -69,6 +77,10 @@
   outline: none;
   border-color: #6366f1;
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.16);
+}
+
+.input::placeholder {
+  color: #94a3b8;
 }
 
 .submit {
@@ -119,6 +131,11 @@
   .card {
     flex-direction: column;
     padding: 40px 32px;
+    gap: 32px;
+  }
+
+  .logoImage {
+    height: 40px;
   }
 
   .heading {
