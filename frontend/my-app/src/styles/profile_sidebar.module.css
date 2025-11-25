@@ -1,12 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap');
 
 .sidebar {
-  background-color: #FFF2DE; /*f8f4ed*/
-  /* border-radius: 8px; */
+  background-color: #FFF2DE;
   padding: 2rem;
-  /* height: 100%; */
-  /* position: sticky; */
-  /* top: 100px; */
   font-family: 'Outfit', sans-serif;
 }
 
@@ -17,24 +13,6 @@
   align-items: center;
   margin-bottom: 5rem;
   margin-top: 3rem;
-}
-
-.image {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-bottom: 1rem;
-  background-color: #d9d9d9;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .username {

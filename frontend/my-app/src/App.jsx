@@ -11,7 +11,8 @@ import Header from './components/header/header'
 import { useAuth } from './context/AuthContext'
 import RotaProtegida from './routes/RotaProtegida';
 import PostComunidade from './components/post_comunidade';
-import BibliotecaUser from './pages/bibliotecaUser'; // Importe a nova página
+import BibliotecaUser from './pages/bibliotecaUser';
+import GerenciarComunidade from './pages/GerenciarComunidade' 
 
 function App() {
   const {setIsAuthenticated, isAuthenticated} = useAuth();
@@ -68,6 +69,16 @@ function App() {
             </RotaProtegida>
         } />
 
+        {/* Rota para gerenciar comunidade */}
+        <Route path="/comunidade/:id/gerenciar" element={
+            <RotaProtegida>
+              <>
+                {HeaderPadrao}
+                <GerenciarComunidade />
+              </>
+            </RotaProtegida>
+        } />
+
         {/* Rota para post individual de uma comunidade*/}
         <Route path="/comunidade/:id/post/:postId" element={
           <RotaProtegida>
@@ -89,7 +100,7 @@ function App() {
           </RotaProtegida>
         } />
 
-        {/* NOVA ROTA: Biblioteca do Usuário */}
+        {/* Biblioteca do Usuário */}
         <Route path="/explorar" element={
           <RotaProtegida>
             <>

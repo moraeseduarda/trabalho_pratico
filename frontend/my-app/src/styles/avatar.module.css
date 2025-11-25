@@ -1,0 +1,54 @@
+.avatar {
+  position: relative;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  user-select: none;
+}
+
+/* Tamanhos */
+.small {
+  width: 40px;
+  height: 40px;
+}
+
+.small .fallback {
+  font-size: 18px;
+}
+
+.medium {
+  width: 80px;
+  height: 80px;
+}
+
+.medium .fallback {
+  font-size: 32px;
+}
+
+.large {
+  width: 120px;
+  height: 120px;
+}
+
+.large .fallback {
+  font-size: 48px;
+}

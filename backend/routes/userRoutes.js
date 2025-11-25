@@ -40,4 +40,4 @@ router.get('/biblioteca', protegeRota, getLivrosUsuario);
 // Atualizar status do livro
 router.put('/biblioteca/:id', protegeRota, atualizarStatusLivro);
 
-export default router
+export default router;
