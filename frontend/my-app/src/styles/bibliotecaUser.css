@@ -1,0 +1,92 @@
+
+.biblioteca-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.page-header h1 {
+  font-size: 32px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+
+.tabs-container {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.tab-btn {
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  color: #666;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+
+.tab-btn.active {
+  background-color: #667eea;
+  color: white;
+}
+
+/* Grid de Livros (Igual ao AddLivros) */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.empty-msg {
+  grid-column: 1 / -1; /* Ocupa toda a largura */
+  text-align: center;
+  color: #888;
+  font-size: 18px;
+  margin-top: 40px;
+}
+
+/* Responsividade */
+@media (max-width: 1000px) {
+  .books-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .books-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .tabs-container {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .books-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tabs-container {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .tab-btn {
+    width: 100%;
+  }
+}
