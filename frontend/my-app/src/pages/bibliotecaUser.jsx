@@ -1,67 +1,77 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BookCard from '../components/bookcard/BookCard';
-import '../styles/bibliotecaUser.css'; 
+import '../styles/bibliotecaUser.css';
 
-function BibliotecaUser({ setIsAuthenticated }) {
-  // Estado para controlar qual aba está selecionada
-  const [abaAtiva, setAbaAtiva] = useState('lendo');
+function BibliotecaUser() {
+  const [livros, setLivros] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState(false);
 
-  // Dados fictícios (MOCK) - Simula o que virá do backend depois
-  // Cada livro tem um 'status' que usaremos para filtrar
-  const meusLivros = [
-    { id: 1, title: 'Clean Code', authors: ['Robert C. Martin'], status: 'lendo' },
-    { id: 2, title: 'The Pragmatic Programmer', authors: ['Andrew Hunt'], status: 'quero-ler' },
-    { id: 3, title: 'JavaScript: The Good Parts', authors: ['Douglas Crockford'], status: 'lido' },
-    { id: 4, title: 'You Don\'t Know JS', authors: ['Kyle Simpson'], status: 'lendo' },
-    { id: 5, title: 'Design Patterns', authors: ['Erich Gamma'], status: 'quero-ler' },
-  ];
+  const URL_BACKEND =
+    import.meta.env.MODE === 'development'
+      ? 'http://localhost:5000'
+      : 'https://trabalho-pratico-fgqh.onrender.com';
 
-  // Filtra os livros baseado na aba ativa
-  const livrosFiltrados = meusLivros.filter(livro => livro.status === abaAtiva);
+  useEffect(() => {
+    carregarBiblioteca();
+  }, []);
+
+  const carregarBiblioteca = async () => {
+    try {
+      const resposta = await fetch(`${URL_BACKEND}/api/users/biblioteca`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (!resposta.ok) {
+        throw new Error('Erro ao buscar biblioteca');
+      }
+
+      const dados = await resposta.json();
+
+      const livrosFormatados = Array.isArray(dados)
+        ? dados
+            .map((item) => {
+              const livro = item.livro || item;
+
+              if (!livro) return null;
+
+              return {
+                id: livro._id,
+                title: livro.titulo,
+                authors: livro.autor ? [livro.autor] : [],
+                imageLinks: { thumbnail: livro.imagemCapa },
+              };
+            })
+            .filter(Boolean)
+        : [];
+
+      setLivros(livrosFormatados);
+    } catch (error) {
+      setErro(true);
+    } finally {
+      setCarregando(false);
+    }
+  };
 
   return (
-    <div>
-      
-      <div className="biblioteca-page">
-        <div className="page-header">
-          <h1>Minha Biblioteca</h1>
-        </div>
+    <div className="biblioteca-page">
+      <div className="page-header">
+        <h1>Minha Biblioteca</h1>
+      </div>
 
-        {/* Botões das Abas */}
-        <div className="tabs-container">
-          <button 
-            className={`tab-btn ${abaAtiva === 'lendo' ? 'active' : ''}`}
-            onClick={() => setAbaAtiva('lendo')}
-          >
-            📖 Lendo
-          </button>
-          
-          <button 
-            className={`tab-btn ${abaAtiva === 'quero-ler' ? 'active' : ''}`}
-            onClick={() => setAbaAtiva('quero-ler')}
-          >
-            🔖 Quero Ler
-          </button>
-          
-          <button 
-            className={`tab-btn ${abaAtiva === 'lido' ? 'active' : ''}`}
-            onClick={() => setAbaAtiva('lido')}
-          >
-            ✅ Lidos
-          </button>
-        </div>
+      {carregando && <p className="loading-msg">Carregando...</p>}
+      {erro && <p className="error-msg">Ocorreu um erro ao carregar a biblioteca.</p>}
 
-        {/* Grid de Livros */}
+      {!carregando && !erro && (
         <div className="books-grid">
-          {livrosFiltrados.length > 0 ? (
-            livrosFiltrados.map((livro) => (
-              <BookCard key={livro.id} livro={livro} />
-            ))
+          {livros.length > 0 ? (
+            livros.map((livro) => <BookCard key={livro.id} livro={livro} />)
           ) : (
-            <p className="empty-msg">Nenhum livro nesta lista ainda.</p>
+            <p className="empty-msg">Nada para ver aqui.</p>
           )}
         </div>
-      </div>
+      )}
     </div>
   );
 }
