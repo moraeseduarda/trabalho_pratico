@@ -19,7 +19,7 @@ function AddLivros() {
     carregarBiblioteca();
   }, []);
 
-  // ADICIONE ESSA FUNÇÃO
+
   const carregarBiblioteca = async () => {
     try {
       const response = await fetch(`${URL_BACKEND}/api/users/biblioteca`, {
@@ -105,6 +105,7 @@ function AddLivros() {
                 favoritoInicial={livroNaBiblioteca?.favorito || false}
                 onLivroAdicionado={handleLivroAdicionado}
                 onFavoritoChange={handleFavoritoChange}
+                mostrarStatus={false}
               />
             );
           })}
