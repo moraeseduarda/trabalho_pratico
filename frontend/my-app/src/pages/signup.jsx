@@ -1,6 +1,7 @@
 import {useState} from 'react';
 import styles from '../styles/sign_in_up.module.css'
 import peopleReadingImg from '../assets/images/people-reading.png';
+import logo from '../assets/images/bookbox-logo-signin.png';
 import { Link } from 'react-router-dom';
 
 function SignUp(){
@@ -13,14 +14,15 @@ function SignUp(){
     const [nome, setNome] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    
     const handleSubmit = async (event) => {
-  event.preventDefault(); // evita reload da página
+      event.preventDefault(); // evita reload da página
 
-  // Validação de preenchimento
-  if (!nome || !email || !password) {
-    alert('Preencha todos os campos!');
-    return;
-  }
+    // Validação de preenchimento
+    if (!nome || !email || !password) {
+      alert('Preencha todos os campos!');
+      return;
+    }
 
   try {
     // Envia os dados para o backend
@@ -52,6 +54,7 @@ function SignUp(){
         <main className={styles.page}>
             <section className={styles.card}>
                 <div className={styles.formArea}>
+                    <img src={logo} alt="BookBox" className={styles.logoImage} /> {/* ADICIONE ISSO */}
                     <h1 className={styles.heading}>Comece já!</h1>
                     <p className={styles.subheading}>Faça parte da nossa comunidade de leitores!</p>
                     <form className={styles.form} onSubmit={handleSubmit}> 
@@ -64,17 +67,15 @@ function SignUp(){
                             value = {nome} 
                             onChange={(e) => setNome(e.target.value)}
                         />
-                        <label className = {styles.label} htmlFor='email'>
-                            Email
-                        </label>
+                        <label className = {styles.label} htmlFor='email'>Email</label>
                         <input
-                        className={styles.input} 
-                        id = "email"
-                        type = "email"
-                        placeholder='Seu E-Mail'
-                        value = {email}
-                        onChange={(e)=>setEmail(e.target.value)}
-                         />
+                            className={styles.input} 
+                            id = "email"
+                            type = "email"
+                            placeholder='seu@email.com'
+                            value = {email}
+                            onChange={(e)=>setEmail(e.target.value)}
+                        />
                         <label className = {styles.label} htmlFor='senha'>Senha</label>
                          <input className = {styles.input}
                          id = "senha"
@@ -89,14 +90,13 @@ function SignUp(){
                 </div>
                 <div className = {styles.imageArea}>
                     <img 
-                    src={peopleReadingImg} 
-                    alt="" 
-                    className = {styles.illustration}/>
+                        src={peopleReadingImg} 
+                        alt="Pessoas lendo livros" 
+                        className = {styles.illustration}
+                    />
                 </div>
             </section>
         </main>
-
-
     )
 }
 
