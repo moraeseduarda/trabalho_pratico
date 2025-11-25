@@ -163,7 +163,7 @@ const logoutUser = (_req, res) => {
     res.clearCookie('jwt', {
         httpOnly: true,
         secure: isProduction,
-        sameSite: isProduction ? 'none' : 'lax',
+        sameSite: 'none',
         path: '/'
     });
 
