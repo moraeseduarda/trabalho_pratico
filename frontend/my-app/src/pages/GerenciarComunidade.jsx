@@ -79,8 +79,6 @@ export default function GerenciarComunidade() {
     }
   };
 
-  if (loading) return <div>Carregando...</div>;
-
   return (
     <div className={styles.main}>
       <header className={styles.header}>
