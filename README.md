@@ -11,6 +11,11 @@
 
 Uma aplicação onde usuários podem adicionar seus livros favoritos e participar de comunidades literárias (estilo Skoob).
 
+### Acesso à Aplicação
+**URL:** [https://trabalho-pratico-z409.onrender.com/](https://trabalho-pratico-z409.onrender.com/)
+
+> ⚠️ **Nota:** A aplicação está hospedada no Render (plano gratuito). O primeiro acesso pode levar até 1 minuto para carregar devido ao cold start.
+
 ### Stack
 - M: MongoDB
 - E: Express.js
